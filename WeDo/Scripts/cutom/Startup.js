@@ -1,1 +1,0 @@
-﻿var App = angular.module('angelHack', {});

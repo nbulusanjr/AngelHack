@@ -8,7 +8,7 @@ namespace WeDo.Models
 {
     public class AuthorizationGateway
     {
-        public static UsersModel  GetAuthorizedInfo(LoginViewModel login)
+        public static UsersModel  GetAuthorizedInfo()
         {
             UsersModel em = new UsersModel();
 
@@ -27,7 +27,7 @@ namespace WeDo.Models
             if (debugMode)
             {
 
-                return em.FindUser("johndoe@gmail.com", "P@ssw0rd");
+                return em.FindUser("abner@gmail.com", "P@ssw0rd");
 
                 //  return em.FindAgent("juandelacruz@gmail.com", "P@ssw0rd");
 
@@ -36,23 +36,15 @@ namespace WeDo.Models
             {
 
 
-                if (login == null)
-                {
-                    return null;
-                }
 
                 if (HttpContext.Current.Session["UserData"] != null)
                 {
                     return (UsersModel)HttpContext.Current.Session["UserData"];
                 }
 
+                return null;
 
-
-                    var emp = em.FindUser(login.Email, login.Password);
-
-                HttpContext.Current.Session["UserData"] = emp;
-
-                return emp;
+                
             }
         }
 

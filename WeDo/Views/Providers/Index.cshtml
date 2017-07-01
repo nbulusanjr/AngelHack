@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Providers Page";
+}
+
+
+<div ng-controller="providersController" ng-init="getPendingRequests();getPendingBids()">
+
+
+
+</div>
+
+@section scripts{
+    
+    
+    <script >
+
+
+        App.controller('providersController', function ($scope,$http) {
+
+
+            $scope.getPendingRequests = function () {
+
+
+
+                $http.post("/Providers/GetPendingNotifications").then(function (response) {
+
+                    console.log(response.data);
+
+                    if (response.data.Result == "ERROR") {
+                        toastr.error(response.data.Message, "");
+                        return;
+                    }
+
+                    $scope.pendingRequest = data.Records;
+
+                }).then(function (response) {
+
+                    console.log(response);
+
+                });
+
+            }
+
+
+            $scope.getPendingBids = function () {
+
+
+                $http.post("/Providers/GetMyPendingBids").then(function (response) {
+
+                    console.log(response.data);
+
+                    if (response.data.Result == "ERROR") {
+                        toastr.error(response.data.Message, "");
+                        return;
+                    }
+
+                    $scope.pendingBids = data.Records;
+
+                }).then(function (response) {
+
+                    console.log(response);
+
+                });
+
+            }
+
+        });
+
+    </script>
+    
+    }
+
+
+

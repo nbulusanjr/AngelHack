@@ -6,9 +6,10 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link type="text/css" href="~/Content/toastr.min.css"  rel="stylesheet"/>
 
 </head>
-<body>
+<body ng-app="angelHack">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -46,7 +47,11 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript" src="~/Scripts/toastr.min.js"></script>
     <script type="text/javascript" src="~/Scripts/angular.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/custom/Startup.js"></script>
+
+
 
     @RenderSection("scripts", required: false)
 </body>

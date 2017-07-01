@@ -106,3 +106,5 @@ d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\MoreLinq.dll
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\System.ValueTuple.dll
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\AutoMapper.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\MoreLinq.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\MySql.Data.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\MySql.Data.Entity.EF6.dll
