@@ -91,7 +91,7 @@ namespace WeDo.Controllers
 
                 var context = GlobalHost.ConnectionManager.GetHubContext<PushNotificationHub>();
 
-                context.Clients.All.broadcastBid(bid.RequestID,bid);
+                context.Clients.Group("Providers").sendRequestToProviders(bid.RequestID,bid);
 
 
                 return Json(new { Result = "OK", Record = result }, JsonRequestBehavior.AllowGet);

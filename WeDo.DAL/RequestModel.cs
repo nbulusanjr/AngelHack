@@ -82,13 +82,17 @@ namespace WeDo.DAL
                     newRequest.DeliveryDate = request.DeliveryDate;
                     newRequest.Description = request.Description;
                     newRequest.StatusID = (int)request.StatusID;
+                    newRequest.UserID = requestor.ID;
 
                     db.requests.Add(newRequest);
                     db.SaveChanges();
 
                     transaction.Commit();
 
-                    return null;
+                    request.ID = newRequest.ID;
+                    request.UserID = requestor.ID;
+
+                    return request;
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -65,6 +66,10 @@ namespace WeDo.Controllers
                 model.StatusID = RequestStatus.AWAITING;
                 model.UserID = auth.ID;
                 var result = requestRepo.Create(model, auth);
+
+                var context = GlobalHost.ConnectionManager.GetHubContext<PushNotificationHub>();
+
+                context.Clients.Group("Providers").sendRequestToProviders(result);
 
                 return Json(new { Result = "OK", Record = result }, JsonRequestBehavior.AllowGet);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,7 +14,9 @@ namespace WeDo.Models
             UsersModel em = new UsersModel();
 
             var agent = System.Web.HttpContext.Current;
-            var session = HttpContext.Current.Session;
+            //var session = HttpContext.Current.Session;
+            var session = HttpContext.Current.Request.Cookies["UserData"];
+
 
             bool debugMode = false;
 
@@ -35,11 +38,10 @@ namespace WeDo.Models
             else
             {
 
+                if (session!=null)
+                {            
 
-
-                if (HttpContext.Current.Session["UserData"] != null)
-                {
-                    return (UsersModel)HttpContext.Current.Session["UserData"];
+                    return JsonConvert.DeserializeObject<UsersModel>(session.Value);
                 }
 
                 return null;

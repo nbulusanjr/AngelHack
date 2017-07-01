@@ -24,7 +24,7 @@ namespace WeDo
         public void SendRequestToProviders(RequestModel request)
         {
             var subscribed = Clients.Group("Providers");
-            subscribed.SendRequestToProviders(request);
+            subscribed.sendRequestToProviders(request);
         }
 
 

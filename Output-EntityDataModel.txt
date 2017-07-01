@@ -1,0 +1,6 @@
+﻿Generated model file: WeDoModel.edmx.
+Loading metadata from the database took 00:00:01.7895515.
+Generating the model took 00:00:04.3326929.
+Generated model file: WeDoModel.edmx.
+Loading metadata from the database took 00:00:00.6497985.
+Generating the model took 00:00:01.6625582.

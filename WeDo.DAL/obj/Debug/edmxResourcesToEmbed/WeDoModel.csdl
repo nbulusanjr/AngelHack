@@ -101,7 +101,7 @@
     <NavigationProperty Name="requestbids" Relationship="angelhackModel.requestbids_ibfk_1" FromRole="user" ToRole="requestbid" />
     <NavigationProperty Name="requestnotifications" Relationship="angelhackModel.requestnotifications_ibfk_2" FromRole="user" ToRole="requestnotification" />
     <NavigationProperty Name="requestnotifications1" Relationship="angelhackModel.requestnotifications_ibfk_3" FromRole="user" ToRole="requestnotification" />
-    <NavigationProperty Name="request" Relationship="angelhackModel.requests_ibfk_1" FromRole="user" ToRole="request" />
+    <NavigationProperty Name="requests" Relationship="angelhackModel.requests_ibfk_1" FromRole="user" ToRole="request" />
   </EntityType>
   <EntityType Name="usertype">
     <Key>
@@ -174,13 +174,13 @@
   </Association>
   <Association Name="requests_ibfk_1">
     <End Type="angelhackModel.user" Role="user" Multiplicity="1" />
-    <End Type="angelhackModel.request" Role="request" Multiplicity="0..1" />
+    <End Type="angelhackModel.request" Role="request" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="user">
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="request">
-        <PropertyRef Name="ID" />
+        <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

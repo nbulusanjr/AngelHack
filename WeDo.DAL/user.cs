@@ -19,6 +19,7 @@ namespace WeDo.DAL
             this.requestbids = new HashSet<requestbid>();
             this.requestnotifications = new HashSet<requestnotification>();
             this.requestnotifications1 = new HashSet<requestnotification>();
+            this.requests = new HashSet<request>();
         }
     
         public int ID { get; set; }
@@ -33,6 +34,6 @@ namespace WeDo.DAL
         public virtual ICollection<requestbid> requestbids { get; set; }
         public virtual ICollection<requestnotification> requestnotifications { get; set; }
         public virtual ICollection<requestnotification> requestnotifications1 { get; set; }
-        public virtual request request { get; set; }
+        public virtual ICollection<request> requests { get; set; }
     }
 }
