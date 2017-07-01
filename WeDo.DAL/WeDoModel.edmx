@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="angelhackModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="angelhackModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="requestbids">
           <Key>
             <PropertyRef Name="ID" />
@@ -17,6 +17,19 @@
           <Property Name="ShopName" Type="varchar" MaxLength="255" />
           <Property Name="ShopAddress" Type="varchar" MaxLength="255" />
         </EntityType>
+        <EntityType Name="requestnotifications">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="RequestID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="IsAccepted" Type="bit" Nullable="false" />
+          <Property Name="DateReceived" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+          <Property Name="RequestorID" Type="int" Nullable="false" />
+          <Property Name="IsDeclined" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="requests">
           <Key>
             <PropertyRef Name="ID" />
@@ -28,6 +41,7 @@
           <Property Name="DateRequested" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
           <Property Name="DeliveryDate" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="requeststatus">
           <Key>
@@ -47,6 +61,7 @@
           <Property Name="IsActivated" Type="bit" Nullable="false" />
           <Property Name="ImageUrl" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="UserTypeID" Type="int" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="usertypes">
           <Key>
@@ -57,18 +72,146 @@
           <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
           <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
         </EntityType>
+        <Association Name="requestbids_ibfk_1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="requestbids" Type="Self.requestbids" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestbids">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requestbids_ibfk_2">
+          <End Role="requests" Type="Self.requests" Multiplicity="1" />
+          <End Role="requestbids" Type="Self.requestbids" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="requests">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestbids">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requestnotifications_ibfk_1">
+          <End Role="requests" Type="Self.requests" Multiplicity="1" />
+          <End Role="requestnotifications" Type="Self.requestnotifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="requests">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestnotifications">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requestnotifications_ibfk_2">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="requestnotifications" Type="Self.requestnotifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestnotifications">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requestnotifications_ibfk_3">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="requestnotifications" Type="Self.requestnotifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestnotifications">
+              <PropertyRef Name="RequestorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requests_ibfk_1">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="requests" Type="Self.requests" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requests">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="angelhackModelStoreContainer">
           <EntitySet Name="requestbids" EntityType="Self.requestbids" Schema="angelhack" store:Type="Tables" />
+          <EntitySet Name="requestnotifications" EntityType="Self.requestnotifications" Schema="angelhack" store:Type="Tables" />
           <EntitySet Name="requests" EntityType="Self.requests" Schema="angelhack" store:Type="Tables" />
           <EntitySet Name="requeststatus" EntityType="Self.requeststatus" Schema="angelhack" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="angelhack" store:Type="Tables" />
           <EntitySet Name="usertypes" EntityType="Self.usertypes" Schema="angelhack" store:Type="Tables" />
+          <AssociationSet Name="requestbids_ibfk_1" Association="Self.requestbids_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="requestbids" EntitySet="requestbids" />
+          </AssociationSet>
+          <AssociationSet Name="requestbids_ibfk_2" Association="Self.requestbids_ibfk_2">
+            <End Role="requests" EntitySet="requests" />
+            <End Role="requestbids" EntitySet="requestbids" />
+          </AssociationSet>
+          <AssociationSet Name="requestnotifications_ibfk_1" Association="Self.requestnotifications_ibfk_1">
+            <End Role="requests" EntitySet="requests" />
+            <End Role="requestnotifications" EntitySet="requestnotifications" />
+          </AssociationSet>
+          <AssociationSet Name="requestnotifications_ibfk_2" Association="Self.requestnotifications_ibfk_2">
+            <End Role="users" EntitySet="users" />
+            <End Role="requestnotifications" EntitySet="requestnotifications" />
+          </AssociationSet>
+          <AssociationSet Name="requestnotifications_ibfk_3" Association="Self.requestnotifications_ibfk_3">
+            <End Role="users" EntitySet="users" />
+            <End Role="requestnotifications" EntitySet="requestnotifications" />
+          </AssociationSet>
+          <AssociationSet Name="requests_ibfk_1" Association="Self.requests_ibfk_1">
+            <End Role="users" EntitySet="users" />
+            <End Role="requests" EntitySet="requests" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="angelhackModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="angelhackEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="requestbids" EntityType="angelhackModel.requestbid" />
+          <EntitySet Name="requestnotifications" EntityType="angelhackModel.requestnotification" />
+          <EntitySet Name="requests" EntityType="angelhackModel.request" />
+          <EntitySet Name="requeststatus" EntityType="angelhackModel.requeststatu" />
+          <EntitySet Name="users" EntityType="angelhackModel.user" />
+          <EntitySet Name="usertypes" EntityType="angelhackModel.usertype" />
+          <AssociationSet Name="requestbids_ibfk_1" Association="angelhackModel.requestbids_ibfk_1">
+            <End Role="user" EntitySet="users" />
+            <End Role="requestbid" EntitySet="requestbids" />
+          </AssociationSet>
+          <AssociationSet Name="requestbids_ibfk_2" Association="angelhackModel.requestbids_ibfk_2">
+            <End Role="request" EntitySet="requests" />
+            <End Role="requestbid" EntitySet="requestbids" />
+          </AssociationSet>
+          <AssociationSet Name="requestnotifications_ibfk_1" Association="angelhackModel.requestnotifications_ibfk_1">
+            <End Role="request" EntitySet="requests" />
+            <End Role="requestnotification" EntitySet="requestnotifications" />
+          </AssociationSet>
+          <AssociationSet Name="requestnotifications_ibfk_2" Association="angelhackModel.requestnotifications_ibfk_2">
+            <End Role="user" EntitySet="users" />
+            <End Role="requestnotification" EntitySet="requestnotifications" />
+          </AssociationSet>
+          <AssociationSet Name="requestnotifications_ibfk_3" Association="angelhackModel.requestnotifications_ibfk_3">
+            <End Role="user" EntitySet="users" />
+            <End Role="requestnotification" EntitySet="requestnotifications" />
+          </AssociationSet>
+          <AssociationSet Name="requests_ibfk_1" Association="angelhackModel.requests_ibfk_1">
+            <End Role="user" EntitySet="users" />
+            <End Role="request" EntitySet="requests" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="requestbid">
           <Key>
             <PropertyRef Name="ID" />
@@ -80,55 +223,147 @@
           <Property Name="IsAwarded" Type="Boolean" />
           <Property Name="ShopName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ShopAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="user" Relationship="angelhackModel.requestbids_ibfk_1" FromRole="requestbid" ToRole="user" />
+          <NavigationProperty Name="request" Relationship="angelhackModel.requestbids_ibfk_2" FromRole="requestbid" ToRole="request" />
+        </EntityType>
+        <EntityType Name="requestnotification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="RequestID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="IsAccepted" Type="Boolean" Nullable="false" />
+          <Property Name="DateReceived" Type="DateTime" Nullable="false" />
+          <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
+          <Property Name="RequestorID" Type="Int32" Nullable="false" />
+          <Property Name="IsDeclined" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="request" Relationship="angelhackModel.requestnotifications_ibfk_1" FromRole="requestnotification" ToRole="request" />
+          <NavigationProperty Name="user" Relationship="angelhackModel.requestnotifications_ibfk_2" FromRole="requestnotification" ToRole="user" />
+          <NavigationProperty Name="user1" Relationship="angelhackModel.requestnotifications_ibfk_3" FromRole="requestnotification" ToRole="user" />
         </EntityType>
         <EntityType Name="request">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CurrentLocation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="CurrentLocation" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="StatusID" Type="Int32" Nullable="false" />
           <Property Name="DateRequested" Type="DateTime" Nullable="false" />
           <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
           <Property Name="DeliveryDate" Type="DateTime" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="requestbids" Relationship="angelhackModel.requestbids_ibfk_2" FromRole="request" ToRole="requestbid" />
+          <NavigationProperty Name="requestnotifications" Relationship="angelhackModel.requestnotifications_ibfk_1" FromRole="request" ToRole="requestnotification" />
+          <NavigationProperty Name="user" Relationship="angelhackModel.requests_ibfk_1" FromRole="request" ToRole="user" />
         </EntityType>
         <EntityType Name="requeststatu">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="user">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Fullname" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fullname" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="IsActivated" Type="Boolean" Nullable="false" />
-          <Property Name="ImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="requestbids" Relationship="angelhackModel.requestbids_ibfk_1" FromRole="user" ToRole="requestbid" />
+          <NavigationProperty Name="requestnotifications" Relationship="angelhackModel.requestnotifications_ibfk_2" FromRole="user" ToRole="requestnotification" />
+          <NavigationProperty Name="requestnotifications1" Relationship="angelhackModel.requestnotifications_ibfk_3" FromRole="user" ToRole="requestnotification" />
+          <NavigationProperty Name="request" Relationship="angelhackModel.requests_ibfk_1" FromRole="user" ToRole="request" />
         </EntityType>
         <EntityType Name="usertype">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" />
           <Property Name="DateLastUpdated" Type="DateTime" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="angelhackEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="requestbids" EntityType="Self.requestbid" />
-          <EntitySet Name="requests" EntityType="Self.request" />
-          <EntitySet Name="requeststatus" EntityType="Self.requeststatu" />
-          <EntitySet Name="users" EntityType="Self.user" />
-          <EntitySet Name="usertypes" EntityType="Self.usertype" />
-        </EntityContainer>
-      </Schema>
+        <Association Name="requestbids_ibfk_1">
+          <End Type="angelhackModel.user" Role="user" Multiplicity="1" />
+          <End Type="angelhackModel.requestbid" Role="requestbid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestbid">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requestbids_ibfk_2">
+          <End Type="angelhackModel.request" Role="request" Multiplicity="1" />
+          <End Type="angelhackModel.requestbid" Role="requestbid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestbid">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requestnotifications_ibfk_1">
+          <End Type="angelhackModel.request" Role="request" Multiplicity="1" />
+          <End Type="angelhackModel.requestnotification" Role="requestnotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestnotification">
+              <PropertyRef Name="RequestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requestnotifications_ibfk_2">
+          <End Type="angelhackModel.user" Role="user" Multiplicity="1" />
+          <End Type="angelhackModel.requestnotification" Role="requestnotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestnotification">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requestnotifications_ibfk_3">
+          <End Type="angelhackModel.user" Role="user" Multiplicity="1" />
+          <End Type="angelhackModel.requestnotification" Role="requestnotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="requestnotification">
+              <PropertyRef Name="RequestorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="requests_ibfk_1">
+          <End Type="angelhackModel.user" Role="user" Multiplicity="1" />
+          <End Type="angelhackModel.request" Role="request" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -137,57 +372,73 @@
           <EntitySetMapping Name="requestbids">
             <EntityTypeMapping TypeName="angelhackModel.requestbid">
               <MappingFragment StoreEntitySet="requestbids">
+                <ScalarProperty Name="ShopAddress" ColumnName="ShopAddress" />
+                <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+                <ScalarProperty Name="IsAwarded" ColumnName="IsAwarded" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="requestnotifications">
+            <EntityTypeMapping TypeName="angelhackModel.requestnotification">
+              <MappingFragment StoreEntitySet="requestnotifications">
+                <ScalarProperty Name="IsDeclined" ColumnName="IsDeclined" />
+                <ScalarProperty Name="RequestorID" ColumnName="RequestorID" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="DateReceived" ColumnName="DateReceived" />
+                <ScalarProperty Name="IsAccepted" ColumnName="IsAccepted" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="RequestID" ColumnName="RequestID" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="IsAwarded" ColumnName="IsAwarded" />
-                <ScalarProperty Name="ShopName" ColumnName="ShopName" />
-                <ScalarProperty Name="ShopAddress" ColumnName="ShopAddress" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="requests">
             <EntityTypeMapping TypeName="angelhackModel.request">
               <MappingFragment StoreEntitySet="requests">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="CurrentLocation" ColumnName="CurrentLocation" />
-                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
-                <ScalarProperty Name="DateRequested" ColumnName="DateRequested" />
-                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+                <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="DateRequested" ColumnName="DateRequested" />
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="CurrentLocation" ColumnName="CurrentLocation" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="requeststatus">
             <EntityTypeMapping TypeName="angelhackModel.requeststatu">
               <MappingFragment StoreEntitySet="requeststatus">
-                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="angelhackModel.user">
               <MappingFragment StoreEntitySet="users">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Fullname" ColumnName="Fullname" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsActivated" ColumnName="IsActivated" />
-                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="IsActivated" ColumnName="IsActivated" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="usertypes">
             <EntityTypeMapping TypeName="angelhackModel.usertype">
               <MappingFragment StoreEntitySet="usertypes">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

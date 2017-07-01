@@ -4,57 +4,73 @@
     <EntitySetMapping Name="requestbids">
       <EntityTypeMapping TypeName="angelhackModel.requestbid">
         <MappingFragment StoreEntitySet="requestbids">
+          <ScalarProperty Name="ShopAddress" ColumnName="ShopAddress" />
+          <ScalarProperty Name="ShopName" ColumnName="ShopName" />
+          <ScalarProperty Name="IsAwarded" ColumnName="IsAwarded" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="RequestID" ColumnName="RequestID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="requestnotifications">
+      <EntityTypeMapping TypeName="angelhackModel.requestnotification">
+        <MappingFragment StoreEntitySet="requestnotifications">
+          <ScalarProperty Name="IsDeclined" ColumnName="IsDeclined" />
+          <ScalarProperty Name="RequestorID" ColumnName="RequestorID" />
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateReceived" ColumnName="DateReceived" />
+          <ScalarProperty Name="IsAccepted" ColumnName="IsAccepted" />
           <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="RequestID" ColumnName="RequestID" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="IsAwarded" ColumnName="IsAwarded" />
-          <ScalarProperty Name="ShopName" ColumnName="ShopName" />
-          <ScalarProperty Name="ShopAddress" ColumnName="ShopAddress" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="requests">
       <EntityTypeMapping TypeName="angelhackModel.request">
         <MappingFragment StoreEntitySet="requests">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="CurrentLocation" ColumnName="CurrentLocation" />
-          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
-          <ScalarProperty Name="DateRequested" ColumnName="DateRequested" />
-          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
           <ScalarProperty Name="DeliveryDate" ColumnName="DeliveryDate" />
+          <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateRequested" ColumnName="DateRequested" />
+          <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+          <ScalarProperty Name="CurrentLocation" ColumnName="CurrentLocation" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="requeststatus">
       <EntityTypeMapping TypeName="angelhackModel.requeststatu">
         <MappingFragment StoreEntitySet="requeststatus">
-          <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="users">
       <EntityTypeMapping TypeName="angelhackModel.user">
         <MappingFragment StoreEntitySet="users">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="IsActivated" ColumnName="IsActivated" />
-          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+          <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+          <ScalarProperty Name="IsActivated" ColumnName="IsActivated" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Fullname" ColumnName="Fullname" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="usertypes">
       <EntityTypeMapping TypeName="angelhackModel.usertype">
         <MappingFragment StoreEntitySet="usertypes">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
           <ScalarProperty Name="DateLastUpdated" ColumnName="DateLastUpdated" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

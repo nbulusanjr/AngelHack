@@ -14,6 +14,12 @@ namespace WeDo.DAL
     
     public partial class request
     {
+        public request()
+        {
+            this.requestbids = new HashSet<requestbid>();
+            this.requestnotifications = new HashSet<requestnotification>();
+        }
+    
         public int ID { get; set; }
         public string Description { get; set; }
         public string CurrentLocation { get; set; }
@@ -21,5 +27,10 @@ namespace WeDo.DAL
         public System.DateTime DateRequested { get; set; }
         public System.DateTime DateLastUpdated { get; set; }
         public System.DateTime DeliveryDate { get; set; }
+        public int UserID { get; set; }
+    
+        public virtual ICollection<requestbid> requestbids { get; set; }
+        public virtual ICollection<requestnotification> requestnotifications { get; set; }
+        public virtual user user { get; set; }
     }
 }

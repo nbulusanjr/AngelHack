@@ -21,5 +21,8 @@ namespace WeDo.DAL
         public Nullable<bool> IsAwarded { get; set; }
         public string ShopName { get; set; }
         public string ShopAddress { get; set; }
+    
+        public virtual user user { get; set; }
+        public virtual request request { get; set; }
     }
 }

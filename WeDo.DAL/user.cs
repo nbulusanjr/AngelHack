@@ -14,6 +14,13 @@ namespace WeDo.DAL
     
     public partial class user
     {
+        public user()
+        {
+            this.requestbids = new HashSet<requestbid>();
+            this.requestnotifications = new HashSet<requestnotification>();
+            this.requestnotifications1 = new HashSet<requestnotification>();
+        }
+    
         public int ID { get; set; }
         public string Fullname { get; set; }
         public string Email { get; set; }
@@ -21,5 +28,11 @@ namespace WeDo.DAL
         public bool IsActivated { get; set; }
         public string ImageUrl { get; set; }
         public int UserTypeID { get; set; }
+        public string Password { get; set; }
+    
+        public virtual ICollection<requestbid> requestbids { get; set; }
+        public virtual ICollection<requestnotification> requestnotifications { get; set; }
+        public virtual ICollection<requestnotification> requestnotifications1 { get; set; }
+        public virtual request request { get; set; }
     }
 }

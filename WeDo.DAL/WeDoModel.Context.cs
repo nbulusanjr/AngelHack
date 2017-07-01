@@ -26,6 +26,7 @@ namespace WeDo.DAL
         }
     
         public DbSet<requestbid> requestbids { get; set; }
+        public DbSet<requestnotification> requestnotifications { get; set; }
         public DbSet<request> requests { get; set; }
         public DbSet<requeststatu> requeststatus { get; set; }
         public DbSet<user> users { get; set; }

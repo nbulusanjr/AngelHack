@@ -12,6 +12,19 @@
     <Property Name="ShopName" Type="varchar" MaxLength="255" />
     <Property Name="ShopAddress" Type="varchar" MaxLength="255" />
   </EntityType>
+  <EntityType Name="requestnotifications">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
+    <Property Name="RequestID" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="IsAccepted" Type="bit" Nullable="false" />
+    <Property Name="DateReceived" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
+    <Property Name="RequestorID" Type="int" Nullable="false" />
+    <Property Name="IsDeclined" Type="bit" Nullable="false" />
+  </EntityType>
   <EntityType Name="requests">
     <Key>
       <PropertyRef Name="ID" />
@@ -23,6 +36,7 @@
     <Property Name="DateRequested" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
     <Property Name="DeliveryDate" Type="datetime" Precision="0" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="requeststatus">
     <Key>
@@ -42,6 +56,7 @@
     <Property Name="IsActivated" Type="bit" Nullable="false" />
     <Property Name="ImageUrl" Type="varchar" MaxLength="255" Nullable="false" />
     <Property Name="UserTypeID" Type="int" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="usertypes">
     <Key>
@@ -52,11 +67,108 @@
     <Property Name="DateCreated" Type="datetime" Precision="0" Nullable="false" />
     <Property Name="DateLastUpdated" Type="timestamp" Precision="0" Nullable="false" />
   </EntityType>
+  <Association Name="requestbids_ibfk_1">
+    <End Role="users" Type="Self.users" Multiplicity="1" />
+    <End Role="requestbids" Type="Self.requestbids" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="requestbids">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="requestbids_ibfk_2">
+    <End Role="requests" Type="Self.requests" Multiplicity="1" />
+    <End Role="requestbids" Type="Self.requestbids" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="requests">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="requestbids">
+        <PropertyRef Name="RequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="requestnotifications_ibfk_1">
+    <End Role="requests" Type="Self.requests" Multiplicity="1" />
+    <End Role="requestnotifications" Type="Self.requestnotifications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="requests">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="requestnotifications">
+        <PropertyRef Name="RequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="requestnotifications_ibfk_2">
+    <End Role="users" Type="Self.users" Multiplicity="1" />
+    <End Role="requestnotifications" Type="Self.requestnotifications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="requestnotifications">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="requestnotifications_ibfk_3">
+    <End Role="users" Type="Self.users" Multiplicity="1" />
+    <End Role="requestnotifications" Type="Self.requestnotifications" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="requestnotifications">
+        <PropertyRef Name="RequestorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="requests_ibfk_1">
+    <End Role="users" Type="Self.users" Multiplicity="1" />
+    <End Role="requests" Type="Self.requests" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="requests">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="angelhackModelStoreContainer">
     <EntitySet Name="requestbids" EntityType="Self.requestbids" Schema="angelhack" store:Type="Tables" />
+    <EntitySet Name="requestnotifications" EntityType="Self.requestnotifications" Schema="angelhack" store:Type="Tables" />
     <EntitySet Name="requests" EntityType="Self.requests" Schema="angelhack" store:Type="Tables" />
     <EntitySet Name="requeststatus" EntityType="Self.requeststatus" Schema="angelhack" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="angelhack" store:Type="Tables" />
     <EntitySet Name="usertypes" EntityType="Self.usertypes" Schema="angelhack" store:Type="Tables" />
+    <AssociationSet Name="requestbids_ibfk_1" Association="Self.requestbids_ibfk_1">
+      <End Role="users" EntitySet="users" />
+      <End Role="requestbids" EntitySet="requestbids" />
+    </AssociationSet>
+    <AssociationSet Name="requestbids_ibfk_2" Association="Self.requestbids_ibfk_2">
+      <End Role="requests" EntitySet="requests" />
+      <End Role="requestbids" EntitySet="requestbids" />
+    </AssociationSet>
+    <AssociationSet Name="requestnotifications_ibfk_1" Association="Self.requestnotifications_ibfk_1">
+      <End Role="requests" EntitySet="requests" />
+      <End Role="requestnotifications" EntitySet="requestnotifications" />
+    </AssociationSet>
+    <AssociationSet Name="requestnotifications_ibfk_2" Association="Self.requestnotifications_ibfk_2">
+      <End Role="users" EntitySet="users" />
+      <End Role="requestnotifications" EntitySet="requestnotifications" />
+    </AssociationSet>
+    <AssociationSet Name="requestnotifications_ibfk_3" Association="Self.requestnotifications_ibfk_3">
+      <End Role="users" EntitySet="users" />
+      <End Role="requestnotifications" EntitySet="requestnotifications" />
+    </AssociationSet>
+    <AssociationSet Name="requests_ibfk_1" Association="Self.requests_ibfk_1">
+      <End Role="users" EntitySet="users" />
+      <End Role="requests" EntitySet="requests" />
+    </AssociationSet>
   </EntityContainer>
 </Schema>

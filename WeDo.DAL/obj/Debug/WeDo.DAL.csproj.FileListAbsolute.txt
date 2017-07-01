@@ -9,7 +9,6 @@ d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\MySql.Data.Enti
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\AutoMapper.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\EntityFramework.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\EntityFramework.SqlServer.xml
-d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\obj\Debug\WeDo.DAL.csprojResolveAssemblyReference.cache
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\obj\Debug\WeDo.DAL.dll
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\obj\Debug\WeDo.DAL.pdb
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Microsoft.AspNet.SignalR.Core.dll
@@ -25,3 +24,15 @@ d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Microsoft.Owin.
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Microsoft.Owin.Host.SystemWeb.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Microsoft.Owin.Security.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Newtonsoft.Json.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Hangfire.Core.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Hangfire.Redis.StackExchange.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Hangfire.SqlServer.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\MoreLinq.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\StackExchange.Redis.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\System.ValueTuple.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Hangfire.Core.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\Hangfire.SqlServer.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\MoreLinq.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\StackExchange.Redis.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\es\Hangfire.Core.resources.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\zh\Hangfire.Core.resources.dll
