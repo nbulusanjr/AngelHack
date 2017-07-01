@@ -16,6 +16,7 @@
           <Property Name="IsAwarded" Type="bit" />
           <Property Name="ShopName" Type="varchar" MaxLength="255" />
           <Property Name="ShopAddress" Type="varchar" MaxLength="255" />
+          <Property Name="BidDate" Type="datetime" Precision="0" Nullable="false" />
         </EntityType>
         <EntityType Name="requestnotifications">
           <Key>
@@ -223,6 +224,7 @@
           <Property Name="IsAwarded" Type="Boolean" />
           <Property Name="ShopName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="ShopAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BidDate" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="user" Relationship="angelhackModel.requestbids_ibfk_1" FromRole="requestbid" ToRole="user" />
           <NavigationProperty Name="request" Relationship="angelhackModel.requestbids_ibfk_2" FromRole="requestbid" ToRole="request" />
         </EntityType>
@@ -372,6 +374,7 @@
           <EntitySetMapping Name="requestbids">
             <EntityTypeMapping TypeName="angelhackModel.requestbid">
               <MappingFragment StoreEntitySet="requestbids">
+                <ScalarProperty Name="BidDate" ColumnName="BidDate" />
                 <ScalarProperty Name="ShopAddress" ColumnName="ShopAddress" />
                 <ScalarProperty Name="ShopName" ColumnName="ShopName" />
                 <ScalarProperty Name="IsAwarded" ColumnName="IsAwarded" />

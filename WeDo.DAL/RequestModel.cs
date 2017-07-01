@@ -350,8 +350,12 @@ namespace WeDo.DAL
 
                     var newRequest = db.requests.Where(x => x.ID == request.ID 
                     &&
-                    (x.StatusID!= (int)RequestStatus.CANCELLED)
-                    &&
+                    (
+                    x.StatusID != (int)RequestStatus.CANCELLED &&
+                      x.StatusID != (int)RequestStatus.SERVED &&
+                        x.StatusID != (int)RequestStatus.CLOSED
+                    )
+
                     && x.UserID == requestor.ID).FirstOrDefault();
 
                     if (newRequest == null) throw new Exception("Request does not exist!");
@@ -399,6 +403,142 @@ namespace WeDo.DAL
             }
 
         }
+
+
+
+        public RequestBidsModel PlaceBid(RequestBidsModel bid,UsersModel user)
+        {
+            var db = new angelhackEntities();
+            UsersModel userRepo = new UsersModel();
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    userRepo.CheckUserIfExist(db,user);
+                    userRepo.IsUserServiceProvider(db,user);
+
+                    var newBid = new requestbid();
+                    newBid.IsAwarded = false;
+                    newBid.Price = bid.Price;
+                    newBid.RequestID = bid.RequestID;
+                    newBid.ShopAddress = bid.ShopAddress;
+                    newBid.ShopName = bid.ShopName;
+                    newBid.UserID = user.ID;
+                    db.requestbids.Add(newBid);                   
+
+                    db.SaveChanges();
+                    transaction.Commit();
+                    return bid;
+                   
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
+                {
+                    transaction.Rollback();
+                    Exception ex = dbU.GetBaseException();
+                    throw new Exception(ex.Message);
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    transaction.Rollback();
+                    string errorMessages = null;
+                    foreach (DbEntityValidationResult validationResult in dbEx.EntityValidationErrors)
+                    {
+                        string entityName = validationResult.Entry.Entity.GetType().Name;
+                        foreach (DbValidationError error in validationResult.ValidationErrors)
+                        {
+                            errorMessages += (entityName + "." + error.PropertyName + ": " + error.ErrorMessage);
+                        }
+                    }
+                    throw new Exception(errorMessages);                   
+                }
+                finally
+                {
+                    db.Database.Connection.Close();
+
+                }
+
+
+            }
+
+         
+        }
+
+        public RequestBidsModel AcceptBid(RequestBidsModel bid, UsersModel user)
+        {
+            var db = new angelhackEntities();
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+
+
+
+                    db.SaveChanges();
+                    transaction.Commit();
+                    return null;
+
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
+                {
+                    transaction.Rollback();
+                    Exception ex = dbU.GetBaseException();
+                    throw new Exception(ex.Message);
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+
+
+                    transaction.Rollback();
+                    string errorMessages = null;
+
+                    foreach (DbEntityValidationResult validationResult in dbEx.EntityValidationErrors)
+                    {
+                        string entityName = validationResult.Entry.Entity.GetType().Name;
+                        foreach (DbValidationError error in validationResult.ValidationErrors)
+                        {
+                            errorMessages += (entityName + "." + error.PropertyName + ": " + error.ErrorMessage);
+                        }
+                    }
+
+                    throw new Exception(errorMessages);
+
+                }
+
+                finally
+                {
+                    db.Database.Connection.Close();
+
+                }
+
+
+            }
+
+
+        }
+
+        public List<RequestNotificationsModel> GetNotifications(UsersModel user)
+        {
+
+            UsersModel userRepo = new UsersModel();
+
+     
+
+           
+            using(var db = new angelhackEntities())
+            {
+
+                userRepo.CheckUserIfExist(db,user);
+                userRepo.IsUserServiceProvider(db,user);
+
+
+            }
+
+            return null;
+
+
+        }
+
 
     }
 

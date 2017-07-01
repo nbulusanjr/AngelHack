@@ -17,5 +17,6 @@ namespace WeDo.DAL
         public Nullable<bool> IsAwarded { get; set; }
         public string ShopName { get; set; }
         public string ShopAddress { get; set; }
+        public System.DateTime BidDate { get; set; }
     }
 }

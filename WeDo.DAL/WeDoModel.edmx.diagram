@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b8c4a15b7f1f4c05ac9a5741a2d0f36a" Name="Diagram1">
-        <EntityTypeShape EntityType="angelhackModel.requestbid" Width="1.5" PointX="8.25" PointY="8.875" />
-        <EntityTypeShape EntityType="angelhackModel.requestnotification" Width="1.5" PointX="5.25" PointY="8.625" />
-        <EntityTypeShape EntityType="angelhackModel.request" Width="1.5" PointX="3" PointY="12.375" />
+        <EntityTypeShape EntityType="angelhackModel.requestbid" Width="1.5" PointX="5.25" PointY="9" />
+        <EntityTypeShape EntityType="angelhackModel.requestnotification" Width="1.5" PointX="8.25" PointY="8.875" />
+        <EntityTypeShape EntityType="angelhackModel.request" Width="1.5" PointX="3" PointY="12.75" />
         <EntityTypeShape EntityType="angelhackModel.requeststatu" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="angelhackModel.user" Width="1.5" PointX="0.75" PointY="5" />
         <EntityTypeShape EntityType="angelhackModel.usertype" Width="1.5" PointX="2.75" PointY="0.75" />
