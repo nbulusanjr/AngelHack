@@ -101,3 +101,8 @@ d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AspNet.SignalR.
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AspNet.SignalR.Core.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\AutoMapper.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\MoreLinq.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\System.ValueTuple.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\AutoMapper.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\MoreLinq.xml

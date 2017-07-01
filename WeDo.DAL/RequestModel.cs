@@ -196,19 +196,43 @@ namespace WeDo.DAL
 
         }
         
-        public RequestBidsModel AcceptBid(RequestBidsModel bid, UsersModel user)
+        public List<RequestModel> GetAllMyRequest(UsersModel user)
+        {
+            UsersModel userRepo = new UsersModel();
+            List<RequestModel> myRequests = new List<RequestModel>();
+            using(var db = new angelhackEntities())
+            {
+                userRepo.CheckUserIfExist(db,user);
+
+                var result = db.requests.Where(x => x.UserID == user.ID).ToList();
+
+                myRequests = mapper.Map<List<request>,List<RequestModel>>(result);
+            }
+
+            return myRequests;
+        }
+
+        public void AcceptBid(RequestBidsModel bid, UsersModel user)
         {
             var db = new angelhackEntities();
+            UsersModel userRepo = new UsersModel();
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
+                    userRepo.CheckUserIfExist(db,user);
 
+                    var chkBid = db.requestbids.Where(x => x.ID == bid.ID && x.request.UserID == user.ID).FirstOrDefault();
+
+                    if (chkBid == null) throw new Exception("Bid does not exist!");
+
+                    chkBid.request.StatusID = (int)RequestStatus.CONFIRMED;
+                    chkBid.IsAwarded = true;
 
 
                     db.SaveChanges();
                     transaction.Commit();
-                    return null;
+                   
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
@@ -248,8 +272,7 @@ namespace WeDo.DAL
 
 
         }
-
-
+        
         public List<RequestBidsModel> GetBidsForMyRequest(int requestID, UsersModel user)
         {
             UsersModel userRepo = new UsersModel();
@@ -544,6 +567,7 @@ namespace WeDo.DAL
 
 
         }
+
         public List<RequestNotificationsModel> GetNotifications(UsersModel user)
         {
 
@@ -615,10 +639,7 @@ namespace WeDo.DAL
         #endregion
 
 
-
-
-
-
+        
 
         public RequestBidsModel ViewBid(int requestID, UsersModel user)
         {
@@ -632,7 +653,7 @@ namespace WeDo.DAL
                 userRepo.CheckUserIfExist(db, user);
 
                 var result = db.requestbids.Where(x => x.IsAwarded == false
-                && x.request.UserID == user.ID
+                &&( x.request.UserID == user.ID ||  x.UserID ==user.ID)
                 && x.RequestID == requestID
                 &&
                (
