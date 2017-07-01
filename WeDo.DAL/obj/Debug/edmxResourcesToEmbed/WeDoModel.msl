@@ -4,6 +4,7 @@
     <EntitySetMapping Name="requestbids">
       <EntityTypeMapping TypeName="angelhackModel.requestbid">
         <MappingFragment StoreEntitySet="requestbids">
+          <ScalarProperty Name="BidDate" ColumnName="BidDate" />
           <ScalarProperty Name="ShopAddress" ColumnName="ShopAddress" />
           <ScalarProperty Name="ShopName" ColumnName="ShopName" />
           <ScalarProperty Name="IsAwarded" ColumnName="IsAwarded" />

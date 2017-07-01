@@ -11,6 +11,7 @@
     <Property Name="IsAwarded" Type="bit" />
     <Property Name="ShopName" Type="varchar" MaxLength="255" />
     <Property Name="ShopAddress" Type="varchar" MaxLength="255" />
+    <Property Name="BidDate" Type="datetime" Precision="0" Nullable="false" />
   </EntityType>
   <EntityType Name="requestnotifications">
     <Key>
