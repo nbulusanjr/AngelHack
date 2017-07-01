@@ -116,6 +116,17 @@ namespace WeDo.DAL
 
         }
 
+        public UsersModel FindUser(string email,string password)
+        {
+            var db = new angelhackEntities();
+
+            var result = db.users.Where(x => x.Email == email && x.Password == password).FirstOrDefault();
+
+            if (result == null) throw new Exception("User does not exist1");
+
+            return mapper.Map<user, UsersModel>(result);
+        }
+
         public Boolean CheckUserIfExist(angelhackEntities db,UsersModel user)
         {
             var chkUser = db.users.Where(x => x.ID == user.ID && x.IsActive == true).FirstOrDefault();

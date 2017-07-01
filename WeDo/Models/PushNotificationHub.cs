@@ -39,9 +39,9 @@ namespace WeDo
             Clients.All.broadcastBid(bid.RequestID,bid);
         }
 
-        public void AcceptBid(RequestBidsModel bid)
+        public void AcceptBid(int bidID)
         {
-            Clients.All.acceptBid(bid.ID);
+            Clients.All.acceptBid(bidID);
         }
 
     }
