@@ -37,3 +37,42 @@ d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\bin\Debug\zh\Hangfire.Cor
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\obj\Debug\WeDo.DAL.dll
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\obj\Debug\WeDo.DAL.pdb
 d:\documents\visual studio 2017\Projects\WeDo\WeDo.DAL\obj\Debug\WeDo.DAL.csprojResolveAssemblyReference.cache
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\WeDo.DAL.dll.config
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\WeDo.DAL.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\WeDo.DAL.pdb
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\AutoMapper.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\EntityFramework.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Hangfire.Core.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Hangfire.Redis.StackExchange.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Hangfire.SqlServer.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.AspNet.SignalR.Core.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.AspNet.SignalR.SystemWeb.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.Owin.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.Owin.Security.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\MoreLinq.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\MySql.Data.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\MySql.Data.Entity.EF6.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Owin.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\StackExchange.Redis.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\System.ValueTuple.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\AutoMapper.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\EntityFramework.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Hangfire.Core.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Hangfire.SqlServer.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.AspNet.SignalR.Core.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.AspNet.SignalR.SystemWeb.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.Owin.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Microsoft.Owin.Security.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\MoreLinq.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\StackExchange.Redis.xml
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\es\Hangfire.Core.resources.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\bin\Debug\zh\Hangfire.Core.resources.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\obj\Debug\WeDo.DAL.csprojResolveAssemblyReference.cache
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\obj\Debug\WeDo.DAL.dll
+C:\Users\Aira\Source\Repos\AngelHack\WeDo.DAL\obj\Debug\WeDo.DAL.pdb

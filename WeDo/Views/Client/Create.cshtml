@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+<div ng-controller="clientController" class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Order</h3>
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label class="label">
+                I want
+            </label>
+                <input type="text" class="form-control" ng-model="request.Description"/>
+        </div>
+        <div class="form-group">
+            <label class="label">
+                at
+            </label>
+                <input type="text" class="form-control" ng-model="request.CurrentLocation"/>
+
+        </div>
+        <div class="form-group">
+            <label class="label">
+                on
+            </label>
+                <input type="datetime-local" class="form-control datetime-local" ng-model="request.DeliveryDate"/>
+        </div>
+        <div class="form-group">
+            <a class="btn" ng-click="submitRequest()">Submit</a>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    
+    <script type="text/javascript">
+
+        App.controller('clientController', function ($scope, $http) {
+            $scope.request = {};
+     
+
+
+            $scope.submitRequest = function () {
+
+                var data = JSON.stringify($scope.request);
+
+                var config = {
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    }
+                };
+
+                $http.post("/Client/Create", data, config).then(function (response) {
+
+                    console.log(response)
+
+                    if (response.data.Result == "ERROR") {
+                        toastr.error(response.data.Message, "");
+                        return;
+                    }
+
+                    
+
+                }).then(function (response) {
+
+                    console.log(response)
+                    });
+
+            }
+
+        })
+
+    </script>
+    
+    }
