@@ -222,6 +222,7 @@
     <Content Include="bootflat\js\icheck.min.js" />
     <Content Include="bootflat\js\jquery.fs.selecter.min.js" />
     <Content Include="bootflat\js\jquery.fs.stepper.min.js" />
+    <Content Include="bootflat\js\site.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\toastr.css" />

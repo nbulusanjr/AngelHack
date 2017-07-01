@@ -304,7 +304,17 @@ namespace WeDo.DAL
             return notifications;
         }
 
-        
+        public RequestModel GetRequest(int requestID)
+        {
+            var db = new angelhackEntities();
+
+            var result = db.requests.Where(x => x.ID == requestID).FirstOrDefault();
+
+            if (result == null) throw new Exception("Request does not exist!"); ;
+
+            return mapper.Map<request, RequestModel>(result);
+
+        }
 
         #endregion
 

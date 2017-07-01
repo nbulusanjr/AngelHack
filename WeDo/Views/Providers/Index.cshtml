@@ -65,6 +65,15 @@
 
             }
 
+
+            $.connection.hub.start().done(function () {
+
+                pushNotificationProxy.server.subscribeAsProvider("Providers");
+
+
+            });
+
+
         });
 
     </script>
