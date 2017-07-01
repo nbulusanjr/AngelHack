@@ -21,11 +21,18 @@ namespace WeDo
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/bootflat/js/icheck.min.js",
+                       "~/bootflat/js/jquery.fs.stepper.min.js",
+                       "~/bootflat/js/jquery.fs.selecter.min.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/bootflat/css/bootflat.css"));
+
+            BundleTable.EnableOptimizations = true;
+
         }
     }
 }

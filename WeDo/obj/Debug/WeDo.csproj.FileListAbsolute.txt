@@ -94,3 +94,10 @@ d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AI.Web.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\obj\Debug\WeDo.csprojResolveAssemblyReference.cache
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\obj\Debug\WeDo.dll
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\obj\Debug\WeDo.pdb
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\WeDo.DAL.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\WeDo.DAL.pdb
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\WeDo.DAL.dll.config
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AspNet.SignalR.Core.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AspNet.SignalR.Core.xml
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
