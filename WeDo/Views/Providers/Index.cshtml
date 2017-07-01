@@ -6,78 +6,215 @@
 
 <div ng-controller="providersController" ng-init="getPendingRequests();getPendingBids()">
 
+    <div class="col-md-12">
+        <div class="panel">
+            <ul id="myTab1" class="nav nav-tabs nav-justified">
+                <li class="active"><a href="#requests" data-toggle="tab">Requests</a></li>
+                <li class=""><a href="#deliveries" data-toggle="tab">Deliveries</a></li>
+
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane active" id="requests">
+                    <div class="row">
+
+                        <div class="col-sm-6 col-md-3" ng-repeat="req in sampleRequests" style="margin-bottom:5px;">
+                            <div class="thumbnail">
+                                @*<img class="img-rounded" src="img/thumbnail-1.jpg">*@
+                                <div class="caption text-center">
+                                    <h3>{{req.User.Fullname}}</h3>
+                                    <p>{{req.Description}}</p>
+                                    <p>
+                                        <a href="#" class="btn btn-warning" role="button">Accept</a>
+                                        <a href="#" class="btn btn-default" role="button">Reject</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="tab-pane" id="deliveries">
+                    <div class="row">
+
+                        <div class="col-sm-6 col-md-3" ng-repeat="req in sampleRequests" style="margin-bottom:5px;">
+                            <div class="thumbnail">
+                                @*<img class="img-rounded" src="img/thumbnail-1.jpg">*@
+                                <div class="caption text-center">
+                                    <h3>{{req.User.Fullname}}</h3>
+                                    <p>{{req.Description}}</p>
+                                    <p>
+                                        <a href="#" class="btn btn-warning" role="button">Accept</a>
+                                        <a href="#" class="btn btn-default" role="button">Reject</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script type="text/ng-template" id="newRequestModal.html">
+        <div class="modal-header">
+            <h4 class="modal-title">New Request</h4>
+        </div>
+        <div class="modal-body">
+            <div class="caption text-center">
+                <h3>{{newRequest.User.Fullname}}</h3>
+                <p>{{newRequest.Description}}</p>
+                <p>
+                    <a href="#" class="btn btn-warning" role="button">Accept</a>
+                    <a href="#" class="btn btn-default" role="button">Reject</a>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer">
+        
+
+        </div>
+    </script>
 
 
 </div>
 
-@section scripts{
+
+
+
+
     
-    
-    <script >
+
+@section scripts{        
+        <script>
+
+  
+            App.controller('providersController', function ($scope, $http, $uibModal) {
 
 
-        App.controller('providersController', function ($scope,$http) {
-
-
-            $scope.getPendingRequests = function () {
-
-
-
-                $http.post("/Providers/GetPendingNotifications").then(function (response) {
-
-                    console.log(response.data);
-
-                    if (response.data.Result == "ERROR") {
-                        toastr.error(response.data.Message, "");
-                        return;
+                $uibModal.open({
+                    animation:true,
+                    ariaLabelledBy: 'modal-title-bottom',
+                    ariaDescribedBy: 'modal-body-bottom',
+                    templateUrl: 'newRequestModal.html',
+                    backdrop: true,
+                    size: 'sm',
+                    controller: function ($scope) {
+                        $scope.name = 'bottom';
                     }
-
-                    $scope.pendingRequest = data.Records;
-
-                }).then(function (response) {
-
-                    console.log(response);
-
                 });
 
-            }
-
-
-            $scope.getPendingBids = function () {
-
-
-                $http.post("/Providers/GetMyPendingBids").then(function (response) {
-
-                    console.log(response.data);
-
-                    if (response.data.Result == "ERROR") {
-                        toastr.error(response.data.Message, "");
-                        return;
+                $scope.newRequest = {
+                    ID: 1,
+                    Description: "I want cheeseburger at ",
+                    CurrentLocation: " A-Space",
+                    StatusID: 1,
+                    DeliveryDate: "2017-01-01 10:00 AM",
+                    User: {
+                        ID: 1,
+                        FullName: "Nicomedes Bulusan"
                     }
+                };
 
-                    $scope.pendingBids = data.Records;
+                $scope.getPendingRequests = function () {
 
-                }).then(function (response) {
 
-                    console.log(response);
+                    $scope.sampleRequests = [{
+                        ID: 1,
+                        Description: "I want cheeseburger at ",
+                        CurrentLocation: " A-Space",
+                        StatusID: 1,
+                        DeliveryDate: "2017-01-01 10:00 AM",
+                        User: {
+                            ID: 1,
+                            FullName: "Nicomedes Bulusan"
+                        }
+                    },
+                    {
+                        ID: 1,
+                        Description: "I want cheeseburger at ",
+                        CurrentLocation: " A-Space",
+                        StatusID: 1,
+                        DeliveryDate: "2017-01-01 10:00 AM",
+                        User: {
+                            ID: 1,
+                            FullName: "Nicomedes Bulusan"
+                        }
+                    },
+                    {
+                        ID: 1,
+                        Description: "I want cheeseburger at ",
+                        CurrentLocation: " A-Space",
+                        StatusID: 1,
+                        DeliveryDate: "2017-01-01 10:00 AM",
+                        User: {
+                            ID: 1,
+                            FullName: "Nicomedes Bulusan"
+                        }
+                    }];
+
+
+                    $http.post("/Providers/GetPendingNotifications").then(function (response) {
+
+                        console.log(response.data);
+
+                        if (response.data.Result == "ERROR") {
+                            toastr.error(response.data.Message, "");
+                            return;
+                        }
+
+                        $scope.pendingRequest = response.data.Records;
+
+                    }).then(function (response) {
+
+                        console.log(response);
+
+                    });
+
+                }
+
+
+                $scope.getPendingBids = function () {
+
+
+                    $http.post("/Providers/GetMyPendingBids").then(function (response) {
+
+                        console.log(response.data);
+
+                        if (response.data.Result == "ERROR") {
+                            toastr.error(response.data.Message, "");
+                            return;
+                        }
+
+                        $scope.pendingBids = response.data.Records;
+
+                    }).then(function (response) {
+
+                        console.log(response);
+
+                    });
+
+                }
+
+
+                $.connection.hub.start().done(function () {
+
+                    pushNotificationProxy.server.subscribeAsProvider("Providers");
+
 
                 });
-
-            }
-
-
-            $.connection.hub.start().done(function () {
-
-                pushNotificationProxy.server.subscribeAsProvider("Providers");
 
 
             });
 
+</script>
 
-        });
-
-    </script>
-    
     }
 
 

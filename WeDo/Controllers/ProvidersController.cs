@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -66,6 +67,32 @@ namespace WeDo.Controllers
                 RequestModel request = new RequestModel();
 
                 var result = request.AcceptRequest(notification,auth);
+                
+
+                return Json(new { Result = "OK", Record = result }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult PlaceMyBid(RequestBidsModel bid)
+        {
+            try
+            {
+                var auth = AuthorizationGateway.GetAuthorizedInfo();
+                RequestModel request = new RequestModel();
+
+                var result = request.PlaceBid(bid, auth);
+
+
+                var context = GlobalHost.ConnectionManager.GetHubContext<PushNotificationHub>();
+
+                context.Clients.All.broadcastBid(bid.RequestID,bid);
+
 
                 return Json(new { Result = "OK", Record = result }, JsonRequestBehavior.AllowGet);
 

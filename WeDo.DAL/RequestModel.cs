@@ -84,6 +84,9 @@ namespace WeDo.DAL
                     newRequest.StatusID = (int)request.StatusID;
 
 
+                    
+
+
                     db.SaveChanges();
 
                     transaction.Commit();
