@@ -25,7 +25,7 @@
                                     <h3>{{req.User.Fullname}}</h3>
                                     <p>{{req.Description}}</p>
                                     <p>
-                                        <a href="#" class="btn btn-warning" role="button" ng-click="acceptRequest(req);">Accept</a>
+                                        <a href="#" data-toggle="modal" data-target="#bidModal" class="btn btn-warning" role="button" ng-click="acceptRequest(req);">Accept</a>
                                         <a href="#" class="btn btn-default" role="button" ng-click="declineRequest(req.Request);">Reject</a>
                                     </p>
                                 </div>
@@ -47,8 +47,8 @@
                                     <h3>{{req.User.Fullname}}</h3>
                                     <p>{{req.Description}}</p>
                                     <p>
-                                        <a href="#" class="btn btn-warning" role="button">Bid</a>
-                   
+                                        <a href="#" class="btn btn-warning" data-toggle="modal"  data-target="#bidModal" ng-click="request=req.Request">Bid</a>
+
                                     </p>
                                 </div>
                             </div>
@@ -102,127 +102,71 @@
         </div>
     </script>
 
-
-
-    <script type="text/ng-template" id="PlaceBidModal.html">
-        <div class="modal-header">
-            <h4 class="modal-title">My Bid</h4>
-        </div>
-        <div class="modal-body">
-            <div class="caption text-center">
-                <h3>{{newRequest.User.Fullname}}</h3>
-                <p>{{newRequest.Description}} at {{ newRequest.CurrentLocation}} on {{newRequest.DeliveryDate}}</p>
-
-                <div class="form-group">
-                    <label class="label">
-                        I want
-                    </label>
-                    
-                    <input type="text" class="form-control" ng-model="biRequest.Description" />
+    <div id="bidModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">My Bid</h4>
                 </div>
-                <div class="form-group">
-                    <label class="label">
-                        at
-                    </label>
-                    <input type="text" class="form-control" ng-model="biRequest.ShopName" />
+                <div class="modal-body">
+                    <div class="caption text-center">
+                        <h3>{{newRequest.User.Fullname}}</h3>
+                        <p>{{newRequest.Description}} at {{ newRequest.CurrentLocation}} on {{newRequest.DeliveryDate}}</p>
+
+                        <div class="form-group">
+                            <label class="label">
+                                I want
+                            </label>
+
+                            <input type="text" class="form-control" ng-model="bidRequest.Description" />
+                        </div>
+                        <div class="form-group">
+                            <label class="label">
+                                at
+                            </label>
+                            <input type="text" class="form-control" ng-model="bidRequest.ShopName" />
+
+                        </div>
+                        <div class="form-group">
+                            <label class="label">
+                                on
+                            </label>
+                            <input type="number" ng-model="bidRequest.Price" />
+                        </div>
+
+                        <p>
+                            <a href="#" class="btn btn-warning" role="button" ng-click="SubmitMyBid()">Submit</a>
+                            <a href="#" class="btn btn-default" role="button" data-dismiss="modal">Cancel</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
 
                 </div>
-                <div class="form-group">
-                    <label class="label">
-                        on
-                    </label>
-                    <input type="number"  ng-model="biRequest.Price" />
-                </div>             
 
-                <p>
-                    <a href="#" class="btn btn-warning" role="button" ng-click="SubmitMyBid()">Submit</a>
-                    <a href="#" class="btn btn-default" role="button" data-dismiss="modal">Cancel</a>
-                </p>
+
+
+            </div>
+
             </div>
         </div>
-        <div class="modal-footer">
 
-
-        </div>
-    </script>
-
-
-</div>
+    </div>
 
 
 
+            @section scripts{
+                <script>
 
 
+                    App.controller('providersController', function ($scope, $http, $uibModal, $rootScope) {
 
 
-@section scripts{
-    <script>
+                        $scope.request = {};
 
 
-        App.controller('providersController', function ($scope, $http, $uibModal, $rootScope) {
-
-
-            $scope.request = {};
-
-
-
-            $rootScope.$on("callGetPendingRequests", function () {
-                $scope.getPendingRequests();
-            });
-
-            $rootScope.$on("callAcceptRequest", function () {
-
-                console.log($scope.newRequest)
-
-                $scope.acceptRequest($scope.newRequest);
-            });
-
-            $rootScope.$on("callDeclineRequest", function () {
-                console.log($scope.newRequest)
-                $scope.declineRequest($scope.newRequest);
-            });
-
-            $scope.acceptRequest = function (myrequest) {
-
-                console.log(myrequest);
-
-
-                var data = JSON.stringify(myrequest);
-
-                var config = {
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
-                    }
-                };
-
-                $http.post("/Providers/AcceptRequest", data, config).then(function (response) {
-
-                    console.log(response.data);
-
-                    if (response.data.Result == "ERROR") {
-                        toastr.error(response.data.Message, "");
-                        return;
-
-                    }
-
-
-
-                    //  $rootScope.getPendingRequests();
-
-                    $rootScope.$emit("callGetPendingRequests", {});
-
-                    $uibModal.open({
-                        animation: true,
-                        ariaLabelledBy: 'modal-title-bottom',
-                        ariaDescribedBy: 'modal-body-bottom',
-                        templateUrl: 'PlaceBidModal.html',
-                        backdrop: true,
-                        size: 'sm',
-                        controller: function ($scope) {
-
-
-                            $scope.newRequest = myrequest;
-
+                        $scope.SubmitMyBid = function () {
                             var tData = {
                                 Header: myrequest,
                                 RequestID: bidRequest.ID,
@@ -232,244 +176,286 @@
 
                             }
 
-                            $scope.SubmitMyBid = function () {
+                            var data = JSON.stringify(tData);
 
+                            var config = {
+                                headers: {
+                                    'Content-Type': 'application/json; charset=utf-8'
+                                }
+                            };
 
-                                var data = JSON.stringify(tData);
+                            $http.post("/Providers/PlaceMyBid", data, config).then(function (response) {
 
-                                var config = {
-                                    headers: {
-                                        'Content-Type': 'application/json; charset=utf-8'
-                                    }
-                                };
+                                console.log(response);
 
-                                $http.post("/Providers/PlaceMyBid", data, config).then(function (response) {
+                                if (response.data.Result == "ERROR") {
+                                    toastr.error(response.data.Message, "");
+                                    return;
+                                }
 
-                                    console.log(response);
+                            })
 
-                                    if (response.data.Result == "ERROR") {
-                                        toastr.error(response.data.Message, "");
-                                        return;
-                                    }
-
-                                })
-
-
-                            }
 
                         }
+
+
+
+                        $rootScope.$on("callGetPendingRequests", function () {
+                            $scope.getPendingRequests();
+                        });
+
+                        $rootScope.$on("callAcceptRequest", function () {
+
+                            console.log($scope.newRequest)
+
+                            $scope.acceptRequest($scope.newRequest);
+                        });
+
+                        $rootScope.$on("callDeclineRequest", function () {
+                            console.log($scope.newRequest)
+                            $scope.declineRequest($scope.newRequest);
+                        });
+
+                        $scope.acceptRequest = function (myrequest) {
+
+                            console.log(myrequest);
+
+
+                            var data = JSON.stringify(myrequest);
+
+                            var config = {
+                                headers: {
+                                    'Content-Type': 'application/json; charset=utf-8'
+                                }
+                            };
+
+                            $http.post("/Providers/AcceptRequest", data, config).then(function (response) {
+
+                                console.log(response.data);
+
+                                if (response.data.Result == "ERROR") {
+                                    toastr.error(response.data.Message, "");
+                                    return;
+
+                                }
+
+
+
+                                //  $rootScope.getPendingRequests();
+
+                                $rootScope.$emit("callGetPendingRequests", {});
+
+               
+
+                            }).then(function (response) {
+                                console.log(response);
+                            });
+
+                        }
+
+
+                        $scope.declineRequest = function (request) {
+
+
+                            console.log(request);
+
+                            var data = JSON.stringify(request);
+
+                            var config = {
+                                headers: {
+                                    'Content-Type': 'application/json; charset=utf-8'
+                                }
+                            };
+
+                            $http.post("/Providers/DeclineRequest", data, config).then(function (response) {
+
+                                console.log(response.data);
+
+                                if (response.data.Result == "ERROR") {
+                                    toastr.error(response.data.Message, "");
+                                    return;
+
+                                }
+
+                                // $scope.getPendingRequests();
+                                $rootScope.$emit("callGetPendingRequests", {});
+
+                            }).then(function (response) {
+                                console.log(response);
+                            });
+
+                        }
+
+
+
+                        $scope.getPendingRequests = function () {
+
+
+
+
+                            $http.post("/Providers/GetPendingNotifications").then(function (response) {
+
+                                console.log(response.data);
+
+                                if (response.data.Result == "ERROR") {
+                                    toastr.error(response.data.Message, "");
+                                    return;
+                                }
+
+                                $scope.pendingRequest = response.data.Records;
+
+                            }).then(function (response) {
+
+                                console.log(response);
+
+                            });
+
+                        }
+
+
+                        $scope.getPendingBids = function () {
+
+
+                            $http.post("/Providers/GetPendingBids").then(function (response) {
+
+                                console.log(response.data);
+
+                                if (response.data.Result == "ERROR") {
+                                    toastr.error(response.data.Message, "");
+                                    return;
+                                }
+
+                                $scope.pendingBids = response.data.Records;
+
+                            }).then(function (response) {
+
+                                console.log(response);
+
+                            });
+
+                        }
+
+
+
+
+                        $scope.getPendingDeliveries = function () {
+
+
+                            $http.post("/Providers/GetMyPendingDeliveries").then(function (response) {
+
+                                console.log(response.data);
+
+                                if (response.data.Result == "ERROR") {
+                                    toastr.error(response.data.Message, "");
+                                    return;
+                                }
+
+                                $scope.pendingDeliveries = response.data.Records;
+
+                            }).then(function (response) {
+
+                                console.log(response);
+
+                            });
+
+                        }
+
+
+
+                        $.connection.hub.start().done(function () {
+
+                            pushNotificationProxy.server.subscribeAsProvider("Providers");
+
+
+                        });
+
+
+
+                        pushNotificationProxy.client.SendRequestToProviders = function (request) {
+
+                            console.log(request);
+
+                            var data = JSON.stringify(request);
+
+                            var config = {
+                                headers: {
+                                    'Content-Type': 'application/json; charset=utf-8'
+                                }
+                            };
+
+
+                            if ($scope.pendingRequest == null) {
+                                $scope.pendingRequest = [];
+                            }
+
+                            $scope.pendingRequest.push(request);
+                            $scope.newRequest = request;
+                            $scope.$apply();
+
+
+                            $http.post("/Providers/SendToMyNotifications", data, config).then(function (response) {
+
+                                console.log(response.data);
+
+
+                            }).then(function (response) {
+
+                                console.log(response);
+
+                            });
+
+                            toastr.info("A new request has been received!", "");
+
+                            $uibModal.open({
+                                animation: true,
+                                ariaLabelledBy: 'modal-title-bottom',
+                                ariaDescribedBy: 'modal-body-bottom',
+                                templateUrl: 'newRequestModal.html',
+                                backdrop: true,
+                                size: 'sm',
+                                controller: function ($scope, $rootScope) {
+
+                                    $scope.newRequest = request;
+
+                                }
+                            });
+
+
+
+                        }
+
+                        pushNotificationProxy.client.cancelMyRequest = function (requestID) {
+
+                            console.log(requestID);
+
+                            var array = $scope.pendingRequest;
+
+                            var pendingBids = $scope.pendingBids;
+
+                            for (var i = array.length - 1; i >= 0; i--) {
+                                if (array[i].ID === requestID) {
+                                    array.splice(i, 1);
+                                    $scope.$apply();
+                                }
+                            }
+
+                            for (var i = pendingBids.length - 1; i >= 0; i--) {
+                                if (pendingBids[i].ID === requestID) {
+                                    array.splice(i, 1);
+                                    $scope.$apply();
+                                }
+                            }
+
+
+
+                        }
+
+
                     });
 
-
-                }).then(function (response) {
-                    console.log(response);
-                });
+                </script>
 
             }
-
-
-            $scope.declineRequest = function (request) {
-
-
-                console.log(request);
-
-                var data = JSON.stringify(request);
-
-                var config = {
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
-                    }
-                };
-
-                $http.post("/Providers/DeclineRequest", data, config).then(function (response) {
-
-                    console.log(response.data);
-
-                    if (response.data.Result == "ERROR") {
-                        toastr.error(response.data.Message, "");
-                        return;
-
-                    }
-
-                    // $scope.getPendingRequests();
-                    $rootScope.$emit("callGetPendingRequests", {});
-
-                }).then(function (response) {
-                    console.log(response);
-                });
-
-            }
-
-
-          
-            $scope.getPendingRequests = function () {
-
-
-
-
-                $http.post("/Providers/GetPendingNotifications").then(function (response) {
-
-                    console.log(response.data);
-
-                    if (response.data.Result == "ERROR") {
-                        toastr.error(response.data.Message, "");
-                        return;
-                    }
-
-                    $scope.pendingRequest = response.data.Records;
-
-                }).then(function (response) {
-
-                    console.log(response);
-
-                });
-
-            }
-
-
-            $scope.getPendingBids = function () {
-
-
-                $http.post("/Providers/GetPendingBids").then(function (response) {
-
-                    console.log(response.data);
-
-                    if (response.data.Result == "ERROR") {
-                        toastr.error(response.data.Message, "");
-                        return;
-                    }
-
-                    $scope.pendingBids = response.data.Records;
-
-                }).then(function (response) {
-
-                    console.log(response);
-
-                });
-
-            }
-
-
-
-
-            $scope.getPendingDeliveries = function () {
-
-
-                $http.post("/Providers/GetMyPendingDeliveries").then(function (response) {
-
-                    console.log(response.data);
-
-                    if (response.data.Result == "ERROR") {
-                        toastr.error(response.data.Message, "");
-                        return;
-                    }
-
-                    $scope.pendingDeliveries = response.data.Records;
-
-                }).then(function (response) {
-
-                    console.log(response);
-
-                });
-
-            }
-
-
-
-            $.connection.hub.start().done(function () {
-
-                pushNotificationProxy.server.subscribeAsProvider("Providers");
-
-
-            });
-
-
-
-            pushNotificationProxy.client.SendRequestToProviders = function (request) {
-
-                console.log(request);
-
-                var data = JSON.stringify(request);
-
-                var config = {
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8'
-                    }
-                };
-
-
-                if ($scope.pendingRequest == null) {
-                    $scope.pendingRequest = [];
-                }
-
-                $scope.pendingRequest.push(request);
-                $scope.newRequest = request;
-                $scope.$apply();
-              
-
-                $http.post("/Providers/SendToMyNotifications",data,config).then(function (response) {
-
-                    console.log(response.data);
-
-
-                }).then(function (response) {
-
-                    console.log(response);
-
-                });
-
-                toastr.info("A new request has been received!", "");
-
-                $uibModal.open({
-                    animation: true,
-                    ariaLabelledBy: 'modal-title-bottom',
-                    ariaDescribedBy: 'modal-body-bottom',
-                    templateUrl: 'newRequestModal.html',
-                    backdrop: true,
-                    size: 'sm',
-                    controller: function ($scope, $rootScope) {
-
-                        $scope.newRequest = request;
-
-                    }
-                });
-
-              
-
-            }
-
-            pushNotificationProxy.client.cancelMyRequest = function (requestID) {
-
-                console.log(requestID);
-
-                var array = $scope.pendingRequest;
-
-                var pendingBids = $scope.pendingBids;
-
-                for (var i = array.length - 1; i >= 0; i--) {
-                    if (array[i].ID === requestID) {
-                        array.splice(i, 1);
-                        $scope.$apply();
-                    }
-                }
-
-                for (var i = pendingBids.length - 1; i >= 0; i--) {
-                    if (pendingBids[i].ID === requestID) {
-                        array.splice(i, 1);
-                        $scope.$apply();
-                    }
-                }
-
-
-
-            }
-
-
-        });
-
-    </script>
-
-}
 
 
 
