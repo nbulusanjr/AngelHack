@@ -91,7 +91,7 @@ namespace WeDo.DAL
 
                     request.ID = newRequest.ID;
                     request.UserID = requestor.ID;
-
+                    request.User = mapper.Map<user,UsersModel>(chkUser);
                     return request;
 
                 }
@@ -313,7 +313,7 @@ namespace WeDo.DAL
         #endregion
 
         #region PROVIDERS
-        public void SendToNotifications(RequestNotificationsModel notification, UsersModel user)
+        public void SendToNotifications(RequestModel notification, UsersModel user)
         {
             var db = new angelhackEntities();
             UsersModel userRepo = new UsersModel();
@@ -329,9 +329,11 @@ namespace WeDo.DAL
                     newNotification.DateLastUpdated = DateTime.Now;
                     newNotification.DateReceived = DateTime.Now;
                     newNotification.IsAccepted = false;
-                    newNotification.RequestID = notification.RequestID;
-                    newNotification.RequestorID = notification.RequestorID;
+                    newNotification.RequestID = notification.ID;
+                    newNotification.RequestorID = notification.UserID;
                     newNotification.UserID = user.ID;
+                    newNotification.IsAccepted = false;
+                    newNotification.IsDeclined = false;
 
                     db.requestnotifications.Add(newNotification);
 
@@ -377,7 +379,7 @@ namespace WeDo.DAL
 
         }
 
-        public RequestNotificationsModel AcceptRequest(RequestNotificationsModel notification, UsersModel user)
+        public void AcceptRequest(RequestModel notification, UsersModel user)
         {
             var db = new angelhackEntities();
             UsersModel userRepo = new UsersModel();
@@ -390,14 +392,15 @@ namespace WeDo.DAL
 
 
                     var newNotification = db.requestnotifications.Where(x => x.UserID == user.ID
-                    && x.IsDeclined == true
+                    && x.IsDeclined == false
+                    && x.IsAccepted ==false
                     && (
                     x.request.StatusID != (int)RequestStatus.CANCELLED &&
                       x.request.StatusID != (int)RequestStatus.SERVED &&
                         x.request.StatusID != (int)RequestStatus.CLOSED
                     )
 
-                    && x.RequestID == notification.RequestID).FirstOrDefault();
+                    && x.RequestID == notification.ID).FirstOrDefault();
 
                     if (newNotification == null) throw new Exception("Request no longer exist!");
 
@@ -406,7 +409,7 @@ namespace WeDo.DAL
                     db.SaveChanges();
                     transaction.Commit();
 
-                    return notification;
+                  
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
@@ -445,8 +448,45 @@ namespace WeDo.DAL
             }
 
         }
+        
 
-        public RequestNotificationsModel DeclineRequest(RequestNotificationsModel notification, UsersModel user)
+        public List<RequestModel> PendingForMyBid(UsersModel user)
+        {
+            UsersModel userRepo = new UsersModel();
+            List<RequestModel> myRequests = new List<RequestModel>();
+            using (var db = new angelhackEntities())
+            {
+                userRepo.CheckUserIfExist(db, user);
+                userRepo.IsUserServiceProvider(db, user);
+                //var result = db.requestnotifications.Where(x=>x.IsAccepted == true &&
+                //(
+                // x.request.StatusID != (int)RequestStatus.CANCELLED &&
+                //      x.request.StatusID != (int)RequestStatus.SERVED &&
+                //        x.request.StatusID != (int)RequestStatus.CLOSED
+                //    )
+
+                //).Select(x=>x.request).ToList();
+
+                var result = (from x in db.requestnotifications
+                              join a in db.requestbids on new { RequestID = x.RequestID, UserID = x.UserID } equals new { RequestID = a.RequestID, UserID = a.UserID } into aa
+                              from aax in aa.DefaultIfEmpty()
+                              where aax == null &&
+                              x.IsAccepted == true &&
+                (
+                 x.request.StatusID != (int)RequestStatus.CANCELLED &&
+                      x.request.StatusID != (int)RequestStatus.SERVED &&
+                        x.request.StatusID != (int)RequestStatus.CLOSED
+                    )
+                              select x.request).ToList();
+
+
+                     myRequests = mapper.Map<List<request>, List<RequestModel>>(result);
+            }
+
+            return myRequests;
+        }
+
+        public void DeclineRequest(RequestModel notification, UsersModel user)
         {
             var db = new angelhackEntities();
             UsersModel userRepo = new UsersModel();
@@ -467,7 +507,7 @@ namespace WeDo.DAL
                         x.request.StatusID != (int)RequestStatus.CLOSED
                     )
                     &&
-                    x.RequestID == notification.RequestID).FirstOrDefault();
+                    x.RequestID == notification.ID).FirstOrDefault();
 
                     if (newNotification == null) throw new Exception("Request no longer exist!");
 
@@ -476,7 +516,7 @@ namespace WeDo.DAL
                     db.SaveChanges();
                     transaction.Commit();
 
-                    return notification;
+                 
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
@@ -535,11 +575,16 @@ namespace WeDo.DAL
                     newBid.ShopAddress = bid.ShopAddress;
                     newBid.ShopName = bid.ShopName;
                     newBid.UserID = user.ID;
+                    newBid.BidDate = DateTime.Now;
                     db.requestbids.Add(newBid);
 
                     db.SaveChanges();
                     transaction.Commit();
-                    return bid;
+
+
+                    var getBid = db.requestbids.Where(x => x.ID == newBid.ID).FirstOrDefault();
+
+                    return mapper.Map<requestbid,RequestBidsModel>(getBid);
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
@@ -587,7 +632,7 @@ namespace WeDo.DAL
                 userRepo.IsUserServiceProvider(db, user);
 
 
-                var result = db.requestnotifications.Where(x => x.IsAccepted == true
+                var result = db.requestnotifications.Where(x => x.IsAccepted == false
                 && x.UserID == user.ID
                 &&
                (

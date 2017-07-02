@@ -40,7 +40,7 @@ namespace WeDo.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetMyPendingBids()
+        public JsonResult GetMyPendingDeliveries()
         {
             try
             {
@@ -59,17 +59,37 @@ namespace WeDo.Controllers
         }
 
         [HttpPost]
-        public JsonResult AcceptRequest(RequestNotificationsModel notification)
+        public JsonResult AcceptRequest(RequestModel notification)
         {
             try
             {
                 var auth = AuthorizationGateway.GetAuthorizedInfo();
                 RequestModel request = new RequestModel();
 
-                var result = request.AcceptRequest(notification,auth);
+           request.AcceptRequest(notification,auth);
                 
 
-                return Json(new { Result = "OK", Record = result }, JsonRequestBehavior.AllowGet);
+                return Json(new { Result = "OK" }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeclineRequest(RequestModel notification)
+        {
+            try
+            {
+                var auth = AuthorizationGateway.GetAuthorizedInfo();
+                RequestModel request = new RequestModel();
+
+                request.DeclineRequest(notification, auth);
+
+
+                return Json(new { Result = "OK"}, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)
@@ -91,10 +111,47 @@ namespace WeDo.Controllers
 
                 var context = GlobalHost.ConnectionManager.GetHubContext<PushNotificationHub>();
 
-                context.Clients.Group("Providers").sendRequestToProviders(bid.RequestID,bid);
+                //context.Clients.All.sendRequestToProviders(bid.RequestID,bid);
 
-
+                context.Clients.All.broadcastBid(bid.RequestID, result);
                 return Json(new { Result = "OK", Record = result }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SendToMyNotifications(RequestModel notification)
+        {
+            try
+            {
+                var auth = AuthorizationGateway.GetAuthorizedInfo();
+                RequestModel request = new RequestModel();
+
+                request.SendToNotifications(notification, auth);
+
+
+                return Json(new { Result = "OK" }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetPendingBids()
+        {
+            try
+            {
+                var auth = AuthorizationGateway.GetAuthorizedInfo();
+                RequestModel request = new RequestModel();
+                var result = request.PendingForMyBid( auth);          
+
+                return Json(new { Result = "OK", Records = result }, JsonRequestBehavior.AllowGet);
 
             }
             catch (Exception ex)

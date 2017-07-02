@@ -100,8 +100,8 @@ namespace WeDo.Controllers
             {
                 ModelState.AddModelError("", ex.Message);
             }
-            return null;
 
+            return View(model);
         }
 
         //

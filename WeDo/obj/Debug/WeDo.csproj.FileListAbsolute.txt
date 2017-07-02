@@ -108,6 +108,7 @@ C:\Users\Aira\Source\Repos\AngelHack\WeDo\bin\MoreLinq.xml
 C:\Users\Aira\Source\Repos\AngelHack\WeDo\obj\Debug\WeDo.csprojResolveAssemblyReference.cache
 C:\Users\Aira\Source\Repos\AngelHack\WeDo\obj\Debug\WeDo.dll
 C:\Users\Aira\Source\Repos\AngelHack\WeDo\obj\Debug\WeDo.pdb
+d:\documents\visual studio 2017\Projects\WeDo\WeDo\obj\Debug\WeDo.csprojResolveAssemblyReference.cache
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\ApplicationInsights.config
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\roslyn\csc.exe
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\roslyn\csc.exe.config
@@ -215,6 +216,5 @@ d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AI.WindowsServe
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\Microsoft.AI.Web.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\AutoMapper.xml
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\bin\MoreLinq.xml
-d:\documents\visual studio 2017\Projects\WeDo\WeDo\obj\Debug\WeDo.csprojResolveAssemblyReference.cache
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\obj\Debug\WeDo.dll
 d:\documents\visual studio 2017\Projects\WeDo\WeDo\obj\Debug\WeDo.pdb
