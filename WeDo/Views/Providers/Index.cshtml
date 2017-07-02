@@ -25,8 +25,8 @@
                                     <h3>{{req.User.Fullname}}</h3>
                                     <p>{{req.Description}}</p>
                                     <p>
-                                        <a href="#" class="btn btn-warning" role="button">Accept</a>
-                                        <a href="#" class="btn btn-default" role="button">Reject</a>
+                                        <a href="#" class="btn btn-warning" role="button" ng-click="acceptRequest(req);">Accept</a>
+                                        <a href="#" class="btn btn-default" role="button" ng-click="declineRequest(req.Request);">Reject</a>
                                     </p>
                                 </div>
                             </div>
@@ -47,8 +47,8 @@
                                     <h3>{{req.User.Fullname}}</h3>
                                     <p>{{req.Description}}</p>
                                     <p>
-                                        <a href="#" class="btn btn-warning" role="button">Accept</a>
-                                        <a href="#" class="btn btn-default" role="button">Reject</a>
+                                        <a href="#" class="btn btn-warning" role="button">Bid</a>
+                   
                                     </p>
                                 </div>
                             </div>
@@ -118,20 +118,20 @@
                         I want
                     </label>
                     
-                    <input type="text" class="form-control" ng-model="request.Description" />
+                    <input type="text" class="form-control" ng-model="biRequest.Description" />
                 </div>
                 <div class="form-group">
                     <label class="label">
                         at
                     </label>
-                    <input type="text" class="form-control" ng-model="request.ShopName" />
+                    <input type="text" class="form-control" ng-model="biRequest.ShopName" />
 
                 </div>
                 <div class="form-group">
                     <label class="label">
                         on
                     </label>
-                    <input type="number"  ng-model="request.Price" />
+                    <input type="number"  ng-model="biRequest.Price" />
                 </div>             
 
                 <p>
@@ -164,6 +164,8 @@
 
             $scope.request = {};
 
+
+
             $rootScope.$on("callGetPendingRequests", function () {
                 $scope.getPendingRequests();
             });
@@ -175,13 +177,17 @@
                 $scope.acceptRequest($scope.newRequest);
             });
 
-            $rootScope.$on("callDeclineRequest", function (request) {
-                $scope.declineRequest(request);
+            $rootScope.$on("callDeclineRequest", function () {
+                console.log($scope.newRequest)
+                $scope.declineRequest($scope.newRequest);
             });
 
-            $scope.acceptRequest = function (request) {
+            $scope.acceptRequest = function (myrequest) {
 
-                var data = JSON.stringify(request);
+                console.log(myrequest);
+
+
+                var data = JSON.stringify(myrequest);
 
                 var config = {
                     headers: {
@@ -215,14 +221,14 @@
                         controller: function ($scope) {
 
 
-                            $scope.newRequest = request;
+                            $scope.newRequest = myrequest;
 
                             var tData = {
-                                Header: request,
-                                RequestID: request.ID,
-                                Price: request.Price,
-                                ShopName: request.ShopName,
-                                ShopAddress: request.ShopAddress
+                                Header: myrequest,
+                                RequestID: bidRequest.ID,
+                                Price: bidRequest.Price,
+                                ShopName: bidRequest.ShopName,
+                                ShopAddress: bidRequest.ShopAddress
 
                             }
 
@@ -264,6 +270,9 @@
 
             $scope.declineRequest = function (request) {
 
+
+                console.log(request);
+
                 var data = JSON.stringify(request);
 
                 var config = {
@@ -272,7 +281,7 @@
                     }
                 };
 
-                $http.post("/Provider/DeclineRequest", data, config).then(function (response) {
+                $http.post("/Providers/DeclineRequest", data, config).then(function (response) {
 
                     console.log(response.data);
 
@@ -396,8 +405,7 @@
                 $scope.pendingRequest.push(request);
                 $scope.newRequest = request;
                 $scope.$apply();
-
-                console.log($scope.newRequest)
+              
 
                 $http.post("/Providers/SendToMyNotifications",data,config).then(function (response) {
 

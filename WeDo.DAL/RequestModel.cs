@@ -499,7 +499,8 @@ namespace WeDo.DAL
 
 
                     var newNotification = db.requestnotifications.Where(x => x.UserID == user.ID
-                    && x.IsDeclined != false
+                   
+                    && x.IsDeclined == false
                     &&
                     (
                     x.request.StatusID != (int)RequestStatus.CANCELLED &&
