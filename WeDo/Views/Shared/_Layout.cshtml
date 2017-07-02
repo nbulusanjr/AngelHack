@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+
+    var auth = WeDo.Models.AuthorizationGateway.GetAuthorizedInfo();
+
+    if (auth == null)
+    {
+        auth = new WeDo.DAL.UsersModel();
+    }
+
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,8 +32,8 @@
                 </button>
                 <a class="navbar-brand" href="#">WeDo</a>
             </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-4">
-                <button type="button" class="btn btn-warning navbar-btn">Sign in</button>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+                <p class="navbar-text navbar-right"><a class="navbar-link" href="">Signed in as @auth.Fullname</a></p>
             </div>
         </div>
     </nav>

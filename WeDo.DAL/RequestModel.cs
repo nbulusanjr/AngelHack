@@ -91,7 +91,7 @@ namespace WeDo.DAL
 
                     request.ID = newRequest.ID;
                     request.UserID = requestor.ID;
-                    request.User = mapper.Map<user,UsersModel>(chkUser);
+                    request.User = mapper.Map<user, UsersModel>(chkUser);
                     return request;
 
                 }
@@ -199,18 +199,18 @@ namespace WeDo.DAL
             }
 
         }
-        
+
         public List<RequestModel> GetAllMyRequest(UsersModel user)
         {
             UsersModel userRepo = new UsersModel();
             List<RequestModel> myRequests = new List<RequestModel>();
-            using(var db = new angelhackEntities())
+            using (var db = new angelhackEntities())
             {
-                userRepo.CheckUserIfExist(db,user);
+                userRepo.CheckUserIfExist(db, user);
 
                 var result = db.requests.Where(x => x.UserID == user.ID).ToList();
 
-                myRequests = mapper.Map<List<request>,List<RequestModel>>(result);
+                myRequests = mapper.Map<List<request>, List<RequestModel>>(result);
             }
 
             return myRequests;
@@ -224,7 +224,7 @@ namespace WeDo.DAL
             {
                 try
                 {
-                    userRepo.CheckUserIfExist(db,user);
+                    userRepo.CheckUserIfExist(db, user);
 
                     var chkBid = db.requestbids.Where(x => x.ID == bid.ID && x.request.UserID == user.ID).FirstOrDefault();
 
@@ -236,7 +236,7 @@ namespace WeDo.DAL
 
                     db.SaveChanges();
                     transaction.Commit();
-                   
+
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
@@ -276,7 +276,7 @@ namespace WeDo.DAL
 
 
         }
-        
+
         public List<RequestBidsModel> GetBidsForMyRequest(int requestID, UsersModel user)
         {
             UsersModel userRepo = new UsersModel();
@@ -308,7 +308,7 @@ namespace WeDo.DAL
             return notifications;
         }
 
-        
+
 
         #endregion
 
@@ -393,7 +393,7 @@ namespace WeDo.DAL
 
                     var newNotification = db.requestnotifications.Where(x => x.UserID == user.ID
                     && x.IsDeclined == false
-                    && x.IsAccepted ==false
+                    && x.IsAccepted == false
                     && (
                     x.request.StatusID != (int)RequestStatus.CANCELLED &&
                       x.request.StatusID != (int)RequestStatus.SERVED &&
@@ -409,7 +409,7 @@ namespace WeDo.DAL
                     db.SaveChanges();
                     transaction.Commit();
 
-                  
+
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
@@ -448,7 +448,7 @@ namespace WeDo.DAL
             }
 
         }
-        
+
 
         public List<RequestModel> PendingForMyBid(UsersModel user)
         {
@@ -480,7 +480,7 @@ namespace WeDo.DAL
                               select x.request).ToList();
 
 
-                     myRequests = mapper.Map<List<request>, List<RequestModel>>(result);
+                myRequests = mapper.Map<List<request>, List<RequestModel>>(result);
             }
 
             return myRequests;
@@ -499,7 +499,7 @@ namespace WeDo.DAL
 
 
                     var newNotification = db.requestnotifications.Where(x => x.UserID == user.ID
-                   
+
                     && x.IsDeclined == false
                     &&
                     (
@@ -517,7 +517,7 @@ namespace WeDo.DAL
                     db.SaveChanges();
                     transaction.Commit();
 
-                 
+
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
@@ -585,7 +585,7 @@ namespace WeDo.DAL
 
                     var getBid = db.requestbids.Where(x => x.ID == newBid.ID).FirstOrDefault();
 
-                    return mapper.Map<requestbid,RequestBidsModel>(getBid);
+                    return mapper.Map<requestbid, RequestBidsModel>(getBid);
 
                 }
                 catch (System.Data.Entity.Infrastructure.DbUpdateException dbU)
@@ -620,11 +620,11 @@ namespace WeDo.DAL
 
         }
 
-        public List<RequestNotificationsModel> GetNotifications(UsersModel user)
+        public List<RequestModel> GetNotifications(UsersModel user)
         {
 
             UsersModel userRepo = new UsersModel();
-            List<RequestNotificationsModel> notifications = new List<RequestNotificationsModel>();
+            List<RequestModel> notifications = new List<RequestModel>();
 
             using (var db = new angelhackEntities())
             {
@@ -634,6 +634,7 @@ namespace WeDo.DAL
 
 
                 var result = db.requestnotifications.Where(x => x.IsAccepted == false
+
                 && x.UserID == user.ID
                 &&
                (
@@ -642,9 +643,9 @@ namespace WeDo.DAL
                         x.request.StatusID != (int)RequestStatus.CLOSED
                     )
 
-                && x.IsDeclined == false).ToList();
+                && x.IsDeclined == false).Select(x => x.request).ToList();
 
-                notifications = mapper.Map<List<requestnotification>, List<RequestNotificationsModel>>(result);
+                notifications = mapper.Map<List<request>, List<RequestModel>>(result);
 
 
             }
@@ -686,12 +687,56 @@ namespace WeDo.DAL
             return notifications;
         }
 
+        public void ConfirmPayment(RequestBidsModel bidRef, UsersModel auth)
+        {
 
+            using (var db = new angelhackEntities())
+            {
+                using (var transaction = db.Database.BeginTransaction())
+                {
+
+
+                    try
+                    {
+
+                        var bid = db.requestbids.Where(x => x.ID == bidRef.ID).FirstOrDefault();
+
+                        if (bid == null) throw new Exception("Bid does not exist!");
+
+                        if(bid.request.StatusID != (int)RequestStatus.SERVED && bid.request.StatusID != (int)RequestStatus.CONFIRMED)
+                        {
+                            throw new Exception("Bid does not exist!");
+                        }
+
+                        bid.request.StatusID = (int)RequestStatus.CLOSED;
+
+
+                        db.SaveChanges();
+
+
+                        transaction.Commit();
+
+                    }
+                    catch (Exception ex)
+                    {
+
+
+                        transaction.Rollback();
+                    }
+                    finally
+                    {
+                        db.Database.Connection.Close();
+                    }
+
+                }
+            }
+
+        }
 
         #endregion
 
 
-        
+
 
         public RequestBidsModel ViewBid(int requestID, UsersModel user)
         {
@@ -705,7 +750,7 @@ namespace WeDo.DAL
                 userRepo.CheckUserIfExist(db, user);
 
                 var result = db.requestbids.Where(x => x.IsAwarded == false
-                &&( x.request.UserID == user.ID ||  x.UserID ==user.ID)
+                && (x.request.UserID == user.ID || x.UserID == user.ID)
                 && x.RequestID == requestID
                 &&
                (

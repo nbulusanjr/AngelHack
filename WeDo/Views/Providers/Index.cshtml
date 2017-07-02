@@ -23,10 +23,10 @@
                                 @*<img class="img-rounded" src="img/thumbnail-1.jpg">*@
                                 <div class="caption text-center">
                                     <h3>{{req.User.Fullname}}</h3>
-                                    <p>{{req.Description}}</p>
+                                    <p>{{req.Description}} at {{req.CurrentLocation}} at {{req.DeliveryDate}}</p>
                                     <p>
-                                        <a href="#" data-toggle="modal" data-target="#bidModal" class="btn btn-warning" role="button" ng-click="acceptRequest(req);">Accept</a>
-                                        <a href="#" class="btn btn-default" role="button" ng-click="declineRequest(req.Request);">Reject</a>
+                                        <a href="#"  class="btn btn-warning" role="button" ng-click="acceptRequest(req);">Accept</a>
+                                        <a href="#" class="btn btn-default" role="button" ng-click="declineRequest(req);">Reject</a>
                                     </p>
                                 </div>
                             </div>
@@ -45,9 +45,9 @@
                                 @*<img class="img-rounded" src="img/thumbnail-1.jpg">*@
                                 <div class="caption text-center">
                                     <h3>{{req.User.Fullname}}</h3>
-                                    <p>{{req.Description}}</p>
+                                    <p>{{req.Description}} at {{req.CurrentLocation}} at {{req.DeliveryDate}}</p>
                                     <p>
-                                        <a href="#" class="btn btn-warning" data-toggle="modal"  data-target="#bidModal" ng-click="request=req.Request">Bid</a>
+                                        <a href="#" class="btn btn-warning"  ng-click="openBid(req)">Bid</a>
 
                                     </p>
                                 </div>
@@ -63,11 +63,11 @@
                             <div class="thumbnail">
                                 @*<img class="img-rounded" src="img/thumbnail-1.jpg">*@
                                 <div class="caption text-center">
-                                    <h3>{{req.User.Fullname}}</h3>
-                                    <p>{{req.Description}}</p>
+                                    <h3>{{req.Header.User.Fullname}}</h3>
+                                    <p>{{req.Header.Description}} at {{req.Header.CurrentLocation}} at {{req.Header.DeliveryDate}}</p>
                                     <p>
-                                        <a href="#" class="btn btn-warning" role="button">Accept</a>
-                                        <a href="#" class="btn btn-default" role="button">Reject</a>
+                                        <a href="#" class="btn btn-warning" role="button" ng-if="req.IsAwarded" ng-click="confirmPayment(req)">Confirm</a>
+                                       
                                     </p>
                                 </div>
                             </div>
@@ -109,33 +109,35 @@
                     <h4 class="modal-title">My Bid</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="caption text-center">
-                        <h3>{{newRequest.User.Fullname}}</h3>
-                        <p>{{newRequest.Description}} at {{ newRequest.CurrentLocation}} on {{newRequest.DeliveryDate}}</p>
+                    <div class="col-md-12 " style="overflow:hidden;">
+                        <h3>{{newRequest.User.Fullname}} </h3>
+                        <p> wants <b>{{newRequest.Description}} at {{newRequest.CurrentLocation}} on {{newRequest.DeliveryDate}}</b></p>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    My offering is
+                                </label>
+                                <input type="text" class="form-control" ng-model="bidRequest.Description" placeholder="Description" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">
+                                    at
+                                </label>
+                                <input type="text" class="form-control" ng-model="bidRequest.ShopName" placeholder="Name of Shop" />
 
-                        <div class="form-group">
-                            <label class="label">
-                                I want
-                            </label>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">
+                                    for
+                                </label>
+                                <input type="text" class="form-control" ng-model="bidRequest.Price" placeholder="Price" />
+                            </div>
+                        </form>
 
-                            <input type="text" class="form-control" ng-model="bidRequest.Description" />
-                        </div>
-                        <div class="form-group">
-                            <label class="label">
-                                at
-                            </label>
-                            <input type="text" class="form-control" ng-model="bidRequest.ShopName" />
-
-                        </div>
-                        <div class="form-group">
-                            <label class="label">
-                                on
-                            </label>
-                            <input type="number" ng-model="bidRequest.Price" />
-                        </div>
+             
 
                         <p>
-                            <a href="#" class="btn btn-warning" role="button" ng-click="SubmitMyBid()">Submit</a>
+                            <a href="#" class="btn btn-warning" role="button" ng-click="SubmitMyBid(newRequest)">Submit</a>
                             <a href="#" class="btn btn-default" role="button" data-dismiss="modal">Cancel</a>
                         </p>
                     </div>
@@ -162,17 +164,28 @@
 
                     App.controller('providersController', function ($scope, $http, $uibModal, $rootScope) {
 
+                        $scope.log = function (data) {
+
+                            console.log(data)
+                        }
 
                         $scope.request = {};
 
 
-                        $scope.SubmitMyBid = function () {
+                        $scope.openBid = function (request) {
+
+                            $scope.newRequest = request;
+
+                            $("#bidModal").modal('show')
+                        }
+
+                        $scope.SubmitMyBid = function (myrequest) {
                             var tData = {
                                 Header: myrequest,
-                                RequestID: bidRequest.ID,
-                                Price: bidRequest.Price,
-                                ShopName: bidRequest.ShopName,
-                                ShopAddress: bidRequest.ShopAddress
+                                RequestID: myrequest.ID,
+                                Price: $scope.bidRequest.Price,
+                                ShopName: $scope.bidRequest.ShopName,
+                                ShopAddress: $scope.bidRequest.ShopAddress
 
                             }
 
@@ -188,6 +201,8 @@
 
                                 console.log(response);
 
+                                $('#bidModal').modal('toggle');
+
                                 if (response.data.Result == "ERROR") {
                                     toastr.error(response.data.Message, "");
                                     return;
@@ -198,6 +213,24 @@
 
                         }
 
+
+
+                        $scope.confirmPayment = function (bid) {
+
+
+
+                            $http.post("/Providers/ConfirmPayment", data, config).then(function (response) {
+
+                                if (response.data.Result == "ERROR") {
+                                    toastr.error(response.data.Message, "");
+                                    return;
+                                }
+
+                                $scope.getPendingDeliveries();
+
+                            })
+
+                        }
 
 
                         $rootScope.$on("callGetPendingRequests", function () {
@@ -406,19 +439,19 @@
 
                             toastr.info("A new request has been received!", "");
 
-                            $uibModal.open({
-                                animation: true,
-                                ariaLabelledBy: 'modal-title-bottom',
-                                ariaDescribedBy: 'modal-body-bottom',
-                                templateUrl: 'newRequestModal.html',
-                                backdrop: true,
-                                size: 'sm',
-                                controller: function ($scope, $rootScope) {
+                            //$uibModal.open({
+                            //    animation: true,
+                            //    ariaLabelledBy: 'modal-title-bottom',
+                            //    ariaDescribedBy: 'modal-body-bottom',
+                            //    templateUrl: 'newRequestModal.html',
+                            //    backdrop: true,
+                            //    size: 'sm',
+                            //    controller: function ($scope, $rootScope) {
 
-                                    $scope.newRequest = request;
+                            //        $scope.newRequest = request;
 
-                                }
-                            });
+                            //    }
+                            //});
 
 
 

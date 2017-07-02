@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.SignalR;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace WeDo.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetPendingNotifications()
+        public ContentResult GetPendingNotifications()
         {
 
             try
@@ -29,18 +30,28 @@ namespace WeDo.Controllers
 
                 var result = request.GetNotifications(auth);
 
-                return Json(new { Result = "OK", Records = result }, JsonRequestBehavior.AllowGet);
+                //  return Json(new { Result = "OK", Records = result }, JsonRequestBehavior.AllowGet);
+                return new ContentResult
+                {
+                    Content = JsonConvert.SerializeObject(new { Result = "OK", Records = result }, new JsonSerializerSettings() { DateFormatString = "yyyy-MM-dd hh:mm:ss tt" }),
+                    ContentType = "application/json"
+                };
 
             }
             catch (Exception ex)
             {
-                return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                // return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return new ContentResult
+                {
+                    Content = JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message }),
+                    ContentType = "application/json"
+                };
             }
 
         }
 
         [HttpPost]
-        public JsonResult GetMyPendingDeliveries()
+        public ContentResult GetMyPendingDeliveries()
         {
             try
             {
@@ -49,12 +60,22 @@ namespace WeDo.Controllers
 
                 var result = request.GetBidsByMe(auth);
 
-                return Json(new { Result = "OK", Records = result }, JsonRequestBehavior.AllowGet);
+                //  return Json(new { Result = "OK", Records = result }, JsonRequestBehavior.AllowGet);
+                return new ContentResult
+                {
+                    Content = JsonConvert.SerializeObject(new { Result = "OK", Records = result }, new JsonSerializerSettings() { DateFormatString = "yyyy-MM-dd hh:mm:ss tt" }),
+                    ContentType = "application/json"
+                };
 
             }
             catch (Exception ex)
             {
-                return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                //return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return new ContentResult
+                {
+                    Content = JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message }),
+                    ContentType = "application/json"
+                };
             }
         }
 
@@ -143,20 +164,52 @@ namespace WeDo.Controllers
             }
         }
 
-        public JsonResult GetPendingBids()
+        [HttpPost]
+        public JsonResult ConfirmPayment(RequestBidsModel bid)
+        {
+
+            try {
+
+                RequestModel reqRepo = new RequestModel();
+                var auth = AuthorizationGateway.GetAuthorizedInfo();
+                reqRepo.ConfirmPayment(bid, auth);
+                return Json(new { Result = "OK" }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch(Exception ex)
+            {
+
+                return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+
+        }
+
+        public ContentResult GetPendingBids()
         {
             try
             {
                 var auth = AuthorizationGateway.GetAuthorizedInfo();
                 RequestModel request = new RequestModel();
-                var result = request.PendingForMyBid( auth);          
+                var result = request.PendingForMyBid( auth);
 
-                return Json(new { Result = "OK", Records = result }, JsonRequestBehavior.AllowGet);
+                // return Json(new { Result = "OK", Records = result }, JsonRequestBehavior.AllowGet);
+
+                return new ContentResult
+                {
+                    Content = JsonConvert.SerializeObject(new { Result = "OK", Records = result }, new JsonSerializerSettings() { DateFormatString = "yyyy-MM-dd hh:mm:ss tt" }),
+                    ContentType = "application/json"
+                };
 
             }
             catch (Exception ex)
             {
-                return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                //return Json(new { Result = "ERROR", Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return new ContentResult
+                {
+                    Content = JsonConvert.SerializeObject(new { Result = "ERROR", Message = ex.Message }),
+                    ContentType = "application/json"
+                };
             }
         }
 
